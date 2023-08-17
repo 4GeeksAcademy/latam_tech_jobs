@@ -4,8 +4,6 @@ import ScrollToTop from "./component/scrollToTop";
 import { BackendURL } from "./component/backendURL";
 
 import { Home } from "./pages/home";
-import { Demo } from "./pages/demo";
-import { Single } from "./pages/single";
 import injectContext from "./store/appContext";
 import { Login } from "./pages/login";
 import { Job } from "./pages/job";
