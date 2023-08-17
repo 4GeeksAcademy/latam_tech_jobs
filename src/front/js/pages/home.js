@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Context } from "../store/appContext";
-import rigoImageUrl from "../../img/rigo-baby.jpg";
+import { Link } from "react-router-dom";
 import "../../styles/home.css";
 
 export const Home = () => {
@@ -8,19 +8,13 @@ export const Home = () => {
 
 	return (
 		<div className="text-center mt-5">
-			<h1>Hello Rigo!!</h1>
-			<p>
-				<img src={rigoImageUrl} />
-			</p>
-			<div className="alert alert-info">
-				{store.message || "Loading message from the backend (make sure your python backend is running)..."}
-			</div>
-			<p>
-				This boilerplate comes with lots of documentation:{" "}
-				<a href="https://start.4geeksacademy.com/starters/react-flask">
-					Read documentation
-				</a>
-			</p>
+			<ul>
+				<li><Link to={'/job'}>Job View</Link></li>
+				<li><Link to={'/post'}>Post Form</Link></li>
+				<li><Link to={'/login'}>Login Form</Link></li>
+				<li><Link to={'/signup'}>SignUp Form</Link></li>
+				<li><Link to={'/apply'}>Apply Form</Link></li>				
+			</ul>
 		</div>
 	);
 };
