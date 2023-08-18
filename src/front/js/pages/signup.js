@@ -1,9 +1,10 @@
 import React from "react";
 
 export function SignUp(){
+    const countries = ['Nicaragua', 'El Salvador', 'Guatemala', 'Costa Rica', 'Colombia', 'Panama', 'Honduras']
     return(
 <div className="container-md">
-    <form className="d-flex flex-column border border-dark-subtle p-4 mt-3 bg-light">
+    <form className="d-flex flex-column border border-dark-subtle p-4 mt-3 bg-light rounded">
         <div className="d-flex">
             <div className="d-flex flex-column col-6 p-4">
                 <div class="mb-3">
@@ -35,9 +36,11 @@ export function SignUp(){
                 <div className="mb-3">
                     <select class="form-select" aria-label="Default select example">
                         <option selected>Select your country</option>
-                        <option value="1">El Salvador</option>
-                        <option value="2">Guatemala</option>
-                        <option value="3">Costa Rica</option>
+                        {
+                            countries.map((country, id)=>(
+                                <option value={id}>{country}</option>
+                            ))
+                        }
                     </select>
                 </div>
                 <div class="mb-3">
