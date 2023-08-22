@@ -22,6 +22,14 @@ class User(db.Model):
     def serialize(self):
         return {
             "id": self.id,
+            "company_name": self.company_name,
+            "company_description": self.company_description,
+            "phone": self.phone, 
             "email": self.email,
+            "country": self.country,
+            "address": self.address,
+            "website": self.website,
+            "linkedin": self.linkedin,
+            "creation_date": self.linkedin
             # do not serialize the password, its a security breach
         }
