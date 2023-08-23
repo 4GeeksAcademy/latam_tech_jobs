@@ -22,7 +22,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			login: async (email, password) => {
-				const resp = await fetch(`https://congenial-bassoon-7wv7wr4g6rhrrq5-3001.app.github.dev/api/login`,{
+				const resp = await fetch(process.env.BACKEND_URL + "/api/login",{
 					method: "POST",
           			headers: { "Content-Type": "application/json" },
           			body: JSON.stringify({ email: email, password: password }) 
