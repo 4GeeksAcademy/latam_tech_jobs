@@ -21,6 +21,26 @@ const getState = ({ getStore, getActions, setStore }) => {
 				getActions().changeColor(0, "green");
 			},
 
+			login: async (email, password) => {
+				const resp = await fetch(`https://congenial-bassoon-7wv7wr4g6rhrrq5-3001.app.github.dev/api/login`,{
+					method: "POST",
+          			headers: { "Content-Type": "application/json" },
+          			body: JSON.stringify({ email: email, password: password }) 
+				})
+				if(!resp.ok) throw Error("There was a problem in the login request")
+
+				if(resp.status === 401){
+					 throw("Invalid credentials")
+				}
+				else if(resp.status === 400){
+					 throw ("Invalid email or password format")
+				}
+				const data = await resp.json()
+				localStorage.setItem("jwt-token", data.authorization);
+		   
+				return console.log(data)
+			},
+
 			getMessage: async () => {
 				try{
 					// fetching data from the backend
