@@ -39,9 +39,7 @@ export function SignUp(){
                     <select class="form-select" aria-label="Default select example" required>
                         <option selected>Select your country</option>
                         {
-                            countries.map((country, id)=>(
-                                <option value={id}>{country}</option>
-                            ))
+                            countries.map((country, id)=>(<option value={id}>{country}</option>))
                         }
                     </select>
                 </div>
