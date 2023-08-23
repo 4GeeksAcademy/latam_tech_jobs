@@ -30,6 +30,6 @@ class User(db.Model):
             "address": self.address,
             "website": self.website,
             "linkedin": self.linkedin,
-            "creation_date": self.linkedin
+            "creation_date": self.creation_date
             # do not serialize the password, its a security breach
         }

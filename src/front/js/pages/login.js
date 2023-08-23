@@ -1,6 +1,16 @@
-import React from "react";
+import React, {useContext, useEffect, useState} from "react";
+import { Context } from "../store/appContext";
 
 export function Login(){
+    const {store, actions} = useContext(Context)
+    const [email, setEmail] = useState()
+    const [password, setPassword] = useState()
+
+    const loginClick = (e)=>{
+        e.preventDefault()
+        actions.login(email, password)
+    }
+
     return (
         <div className="d-flex justify-content-center mt-4">
             <div className="col-4  bg-light border rounded border-dark-subtle p-4">
@@ -9,19 +19,19 @@ export function Login(){
                     <h5><i class="fa-solid fa-user"></i> Login</h5>
                 </div>
                 <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label"><i class="fa-solid fa-envelope"></i> Email address</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"/>
+                    <label for="inputEmail" class="form-label"><i class="fa-solid fa-envelope"></i> Email address</label>
+                    <input onChange={(e)=>{setEmail(e.target.value)}} type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp"/>
                     <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
                 </div>
                 <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label"><i class="fa-solid fa-key"></i> Password</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1"/>
+                    <label for="inputPassword" class="form-label"><i class="fa-solid fa-key"></i> Password</label>
+                    <input onChange={(e)=>{setPassword(e.target.value)}} type="password" class="form-control" id="inputPassword"/>
                 </div>
                 <div class="mb-3 d-flex">
                     <a href="#">Forgot password?</a>
                 </div>
                 <div className="d-flex justify-content-center mb-3">
-                    <button type="submit" class="btn btn-primary">Login</button>
+                    <button onClick = {(e)=>{loginClick(e)}} type="submit" class="btn btn-primary">Login</button>
                 </div>
                 <div className="d-flex justify-content-center">
                     <p>Or login with</p>   
