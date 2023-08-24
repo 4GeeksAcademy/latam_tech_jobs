@@ -40,8 +40,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 				const data = await resp.json()
 				localStorage.setItem("jwt-token", data.authorization);
-				alert('Usuario autenticado de manera satisfactoria')  
-				return console.log(data)
+				return data
 			},
 
 			getMessage: async () => {
