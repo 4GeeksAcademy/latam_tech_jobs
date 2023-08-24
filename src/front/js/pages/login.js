@@ -2,14 +2,24 @@ import React, {useContext, useEffect, useState} from "react";
 import { Context } from "../store/appContext";
 import { useNavigate } from "react-router-dom";
 
+
 export function Login(){
     const {store, actions} = useContext(Context)
     const [email, setEmail] = useState()
     const [password, setPassword] = useState()
+    const navigate = useNavigate()
 
-    const loginClick = (e)=>{
+    const loginClick = async (e)=>{
         e.preventDefault()
-        actions.login(email, password)
+        const data = await actions.login(email, password)
+        if (data.authorization){
+            alert('Log in successfull')
+            navigate('/')
+            window.location.reload(false);
+        }
+        else {
+            alert('login fail')
+        }
     }
 
     return (
