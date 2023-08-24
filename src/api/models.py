@@ -3,6 +3,22 @@ from datetime import datetime
 
 db = SQLAlchemy()
 
+class Job(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    job_title = db.Column(db.String(255), nullable=False)
+    job_description = db.Column(db.String(2000), nullable=False)
+    skills = db.Column(db.String(255), nullable=False)
+    job_type = db.Column(db.String(100))
+    pay_rate = db.Column(db.Float)
+    experience_level = db.Column(db.String(100))
+    questions = db.Column(db.Text)
+    company_name = db.Column(db.String(255), nullable=False)
+    company_website = db.Column(db.String(255), nullable=False)
+    company_country = db.Column(db.String(100), nullable=False)
+    company_state = db.Column(db.String(100), nullable=False)
+    company_city = db.Column(db.String(100), nullable=False)
+    creation_date = db.Column(db.DateTime)
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement = True)
     company_name = db.Column(db.String(100), unique=True, nullable=False)

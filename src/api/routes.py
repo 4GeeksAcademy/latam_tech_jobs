@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User
+from api.models import db, User, Job
 from api.utils import generate_sitemap, APIException
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import create_access_token
@@ -63,3 +63,28 @@ def protected():
     user = User.query.filter_by(email = current_user_email).first()
 
     return jsonify({"logged in as :": user.company_name})
+
+@api.route("/submitjob", methods=["POST"])
+def submitjob():
+    data = request.json
+
+    job = Job(
+        job_title=data["jobTitle"],
+        job_description=data["jobDescription"],
+        skills=data["skills"],
+        job_type=data["jobType"],
+        pay_rate=data["payRate"],
+        experience_level=data["experienceLevel"], 
+        questions="\n".join(data["questions"]),
+        company_name=data["companyName"],
+        company_website=data["companyWebsite"],
+        company_country=data["companyCountry"],
+        company_state=data["companyState"],
+        company_city=data["companyCity"]
+    )
+    if job:
+        db.session.add(job)
+        db.session.commit()
+        return jsonify({"message": "Job posted successfully"})
+    
+    return jsonify({"Error Message:": "Error creating job"})
