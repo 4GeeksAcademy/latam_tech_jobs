@@ -1,3 +1,4 @@
+
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
@@ -31,13 +32,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				if(resp.status === 401){
 					 throw("Invalid credentials")
+					 
 				}
 				else if(resp.status === 400){
 					 throw ("Invalid email or password format")
+					 
 				}
 				const data = await resp.json()
 				localStorage.setItem("jwt-token", data.authorization);
-		   
+				alert('Usuario autenticado de manera satisfactoria')  
 				return console.log(data)
 			},
 
