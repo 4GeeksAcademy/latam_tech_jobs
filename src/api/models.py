@@ -39,6 +39,7 @@ class Job(db.Model):
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement = True)
+    user_name = db.Column(db.String(100), unique=False, nullable=False)
     company_name = db.Column(db.String(100), unique=True, nullable=False)
     password_hash = db.Column(db.String(80), unique=False, nullable=False)
     company_description = db.Column(db.String(1000), unique=False, nullable=False)
@@ -57,6 +58,7 @@ class User(db.Model):
     def serialize(self):
         return {
             "id": self.id,
+            "user_name": self.user_name,
             "company_name": self.company_name,
             "company_description": self.company_description,
             "phone": self.phone, 

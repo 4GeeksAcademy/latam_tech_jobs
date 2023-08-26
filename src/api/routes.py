@@ -22,8 +22,9 @@ def handle_hello():
 
     return jsonify(response_body), 200
 
-@api.route('/register', methods=['POST'])
+@api.route('/signup', methods=['POST'])
 def register():
+    user_name = request.json.get("user_name", None)
     company_name = request.json.get("company_name", None)
     password = request.json.get("password", None)
     company_description = request.json.get("company_description", None)
@@ -36,7 +37,7 @@ def register():
 
     if email and password: 
         pw_hash = bcrypt.generate_password_hash(password).decode('utf-8')
-        new_user = User(company_name = company_name, password_hash = pw_hash, company_description = company_description, phone = phone, email = email, country = country, address = address, website = website, linkedin = linkedin)
+        new_user = User(user_name = user_name, company_name = company_name, password_hash = pw_hash, company_description = company_description, phone = phone, email = email, country = country, address = address, website = website, linkedin = linkedin)
         db.session.add(new_user)
         db.session.commit()
         return jsonify({'message': "user registered successfully"}), 201
