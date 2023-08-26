@@ -17,7 +17,25 @@ class Job(db.Model):
     company_country = db.Column(db.String(100), nullable=False)
     company_state = db.Column(db.String(100), nullable=False)
     company_city = db.Column(db.String(100), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     creation_date = db.Column(db.DateTime)
+
+    def __repr__(self):
+        return f'<User {self.job_title}>'
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "job_title": self.job_title,
+            "pay_rate": self.pay_rate,
+            "experience_level": self.experience_level,
+            "questions": self.questions,
+            "company_name": self.company_name,
+            "company_website": self.company_website,
+            "company_country": self.company_country,
+            "company_city": self.company_city,
+            "creation_date": self.creation_date
+        }
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement = True)
@@ -30,6 +48,7 @@ class User(db.Model):
     address = db.Column(db.String(120), unique=False, nullable=False)
     website = db.Column(db.String(120), unique=False, nullable=False)
     linkedin = db.Column(db.String(120), unique=False, nullable=False)
+    job = db.relationship('Job', backref='user', lazy='dynamic', cascade = 'all, delete, delete, delete-orphan')
     creation_date = db.Column(db.DateTime)
 
     def __repr__(self):
