@@ -1,20 +1,22 @@
 import React, {useRef} from "react";
 import emailjs from '@emailjs/browser';
+import { useNavigate } from "react-router-dom";
 
 export function Apply(){
     const form = useRef()
-    const click = false
+    const navigate = useNavigate()
 
     const sendEmail = (e)=>{
-        click = true
         e.preventDefault()
         emailjs.sendForm('service_jop1cgf', 'template_idqa88j', form.current, 'xL0_Kaj6hkNyykj5i')
         .then((result) => {
             console.log(result.text);
-            alert('Your message was sent to the Hiring Manager')
-            e.target.reset()
+            form.current.reset()
+            alert('Your message was sent to the Hiring Manager') 
+            navigate('/')
         }, (error) => {
             console.log(error.text);
+            alert('Error')
         });
     };
     return (
