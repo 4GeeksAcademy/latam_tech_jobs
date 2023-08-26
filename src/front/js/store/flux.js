@@ -43,6 +43,17 @@ const getState = ({ getStore, getActions, setStore }) => {
 				return data
 			},
 
+			signup: async(new_user)=>{
+				const resp = await fetch(process.env.BACKEND_URL + "/api/signup", {
+					method: "POST",
+					headers: {"Content-Type": "application/json"},
+					body: JSON.stringify(new_user)
+				})
+				if(!resp.ok) throw Error('There was a problem with your registration')
+				const data = await resp.json()
+				return data
+			},
+
 			getMessage: async () => {
 				try{
 					// fetching data from the backend
