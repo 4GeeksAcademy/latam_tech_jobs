@@ -3,6 +3,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			message: null,
+			isMyTokenExpired: true,
 			demo: [
 				{
 					title: "FIRST",
@@ -20,6 +21,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 			// Use getActions to call a function within a fuction
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");
+			},
+
+			logout: ()=>{
+				localStorage.removeItem('jwt-token')
 			},
 
 			login: async (email, password) => {
@@ -40,7 +45,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 				const data = await resp.json()
 				localStorage.setItem("jwt-token", data.authorization);
-				return data
+
+				return resp
 			},
 
 			signup: async(new_user)=>{
@@ -51,7 +57,17 @@ const getState = ({ getStore, getActions, setStore }) => {
 				})
 				if(!resp.ok) throw Error('There was a problem with your registration')
 				const data = await resp.json()
-				return data
+				return resp
+				
+			},
+
+			validate_token: async(token)=>{
+				const resp = await fetch(process.env.BACKEND_URL + 'api/validate_token', {
+					method: "GET",
+					headers: {"Content-Type":"application/json", "Authorization": "Bearer " + token}
+				})
+				const data = await resp.json()
+				return data.isValid
 			},
 
 			getMessage: async () => {
