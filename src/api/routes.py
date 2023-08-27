@@ -40,7 +40,7 @@ def register():
         new_user = User(user_name = user_name, company_name = company_name, password_hash = pw_hash, company_description = company_description, phone = phone, email = email, country = country, address = address, website = website, linkedin = linkedin)
         db.session.add(new_user)
         db.session.commit()
-        return jsonify({'message': "user registered successfully"}), 201
+        return jsonify({'message': "user registered successfully"}), 200
     else:
         return jsonify({'messge': "error"}), 401
     
@@ -57,13 +57,15 @@ def login():
     else:
         return jsonify({"message": "authentication failed"}), 401
     
-@api.route('/protected', methods=['GET'])
+@api.route('/validate_token', methods=['GET'])
 @jwt_required()
-def protected():
+def validate_token():
     current_user_email = get_jwt_identity()
     user = User.query.filter_by(email = current_user_email).first()
-
-    return jsonify({"logged in as :": user.company_name})
+    if user:
+        return jsonify({"logged in as :": user.company_name, "isValid": True}), 200
+    else:
+        return jsonify({"message:": "error in token validation", "isValid": False}), 400
 
 @api.route("/submitjob", methods=["POST"])
 def submitjob():

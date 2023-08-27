@@ -30,16 +30,10 @@ export function SignUp(){
             "website": website,
             "linkedin": linkedin
         }
-        
-        const resp =  await actions.signup(new_user)
+        const resp = actions.signup(new_user)
         if(resp.ok){
-            console.log(new_user)
-            form.current.reset()
-            alert('you have been successfully registered')
-        } else {
-            alert("Internal server error")
+            alert("successful sign up")
         }
-        
     }
 
     return(
@@ -79,7 +73,7 @@ export function SignUp(){
                     <select onChange={(e)=>{setCountry(e.target.value)}} class="form-select" aria-label="Default select example" required>
                         <option selected>Select your country</option>
                         {
-                            countries.map((country, id)=>(<option value={id}>{country}</option>))
+                            countries.map((country, id)=>(<option key={id} value={country}>{country}</option>))
                         }
                     </select>
                 </div>
