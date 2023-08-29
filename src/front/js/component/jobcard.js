@@ -49,10 +49,10 @@ export const Jobcard = () => {
                     </div>
                     <div className="card-footer">
                         <span className="p-2">
-                            <a className="rounded-pill p-2 btn border text-decoration-none" type="button" href="#"><Link to={'/job'} className="text-decoration-none">More info</Link></a>
+                            <a className="rounded-pill p-2 btn border text-decoration-none" type="button" href="#"><Link to={'/job'} className="text-decoration-none text-black">More info</Link></a>
                         </span>
                         <span className="p-2 text-decoration-none">
-                            <a className="rounded-pill p-2 btn bordertext-decoration-none" type="button" href="#"><Link to={'/apply'} className="text-decoration-none">Apply Now!</Link></a>
+                            <a className="rounded-pill p-2 btn bordertext-decoration-none" type="button" href="#"><Link to={'/apply'} className="text-decoration-none text-black">Apply Now!</Link></a>
                         </span>
                     </div>
                 </div>

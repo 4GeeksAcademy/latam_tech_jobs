@@ -9,14 +9,14 @@ export const Home = () => {
 	const { store, actions } = useContext(Context);
 
 	return (
-		<div className="container">
+	<div className="container">
 		<div className="row">
 			<div className="col-xs-8 col-xs-offset-2">
 				<div className="input-group">										
 					<input type="text" className="form-control round" name="x" id="search" placeholder="Search jobs by title or keywords"></input>
 					<span className="input-group-btn">
-						<button className="btn btn-default bg-primary form-control" placeholder="Search Jobs" type="button">
-							<p className="text-white">Search Jobs</p>
+						<button className="btn btn-default bg-warning form-control p-2" placeholder="Search Jobs" type="button">
+							<p className="text-black" style={{marginTop: 5}}>Search Jobs</p>
 						</button>
 					</span>
 				</div>
