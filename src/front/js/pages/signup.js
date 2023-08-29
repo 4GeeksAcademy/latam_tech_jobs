@@ -1,5 +1,6 @@
 import React, {useContext, useState, useRef} from "react";
 import { Context } from "../store/appContext";
+import { useNavigate } from "react-router-dom";
 
 export function SignUp(){
     const countries = ['Nicaragua', 'El Salvador', 'Guatemala', 'Costa Rica', 'Colombia', 'Panama', 'Honduras']
@@ -15,6 +16,7 @@ export function SignUp(){
     const [address, setAddress] = useState()
     const [website, setWebsite] = useState()
     const [linkedin, setLinkedin] = useState()
+    const navigate = useNavigate()
 
     const handleSubmit = async (e)=>{
         e.preventDefault()
@@ -30,10 +32,15 @@ export function SignUp(){
             "website": website,
             "linkedin": linkedin
         }
-        const resp = actions.signup(new_user)
-        if(resp.ok){
-            alert("successful sign up")
+        const result = await actions.signup(new_user)
+        if(result){
+            alert("successful sign up") 
+            navigate('/login')
+            window.location.reload(false); 
+        } else {
+            alert("Error")
         }
+        
     }
 
     return(
