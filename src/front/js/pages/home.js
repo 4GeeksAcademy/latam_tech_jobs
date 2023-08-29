@@ -2,19 +2,32 @@ import React, { useContext } from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 import "../../styles/home.css";
+import { Filter } from "../component/filter";
+import { Jobcard } from "../component/jobcard";
 
 export const Home = () => {
 	const { store, actions } = useContext(Context);
 
 	return (
-		<div className="text-center mt-5">
-			<ul>
-				<li><Link to={'/job'}>Job View</Link></li>
-				<li><Link to={'/post'}>Post Form</Link></li>
-				<li><Link to={'/login'}>Login Form</Link></li>
-				<li><Link to={'/signup'}>SignUp Form</Link></li>
-				<li><Link to={'/apply'}>Apply Form</Link></li>				
-			</ul>
+		<div className="container">
+		<div className="row">
+			<div className="col-xs-8 col-xs-offset-2">
+				<div className="input-group">										
+					<input type="text" className="form-control round" name="x" id="search" placeholder="Search jobs by title or keywords"></input>
+					<span className="input-group-btn">
+						<button className="btn btn-default bg-primary form-control" placeholder="Search Jobs" type="button">
+							<p className="text-white">Search Jobs</p>
+						</button>
+					</span>
+				</div>
+			</div>
 		</div>
+		<br/>
+		<br/>
+		<div style={{ display: "flex" }}>
+			<Filter />
+			<Jobcard />
+		</div>
+	</div>
 	);
 };
