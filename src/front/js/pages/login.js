@@ -12,16 +12,14 @@ export function Login(){
     const loginClick = async (e)=>{
         e.preventDefault()
         const data = await actions.login(email, password)
-        if (data.authorization){
+        if(data){
             alert('Log in successfull')
             navigate('/')
             window.location.reload(false);
-        }
-        else {
+        } else {
             alert('login fail')
-        }
     }
-
+}
     return (
         <div className="d-flex justify-content-center mt-4">
             <div className="col-4  bg-light border rounded border-dark-subtle p-4">
