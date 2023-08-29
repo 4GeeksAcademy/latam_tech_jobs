@@ -1,16 +1,25 @@
 import React, {useContext, useEffect, useState} from "react";
 import { Context } from "../store/appContext";
+import { useNavigate } from "react-router-dom";
+
 
 export function Login(){
     const {store, actions} = useContext(Context)
     const [email, setEmail] = useState()
     const [password, setPassword] = useState()
+    const navigate = useNavigate()
 
-    const loginClick = (e)=>{
+    const loginClick = async (e)=>{
         e.preventDefault()
-        actions.login(email, password)
+        const data = await actions.login(email, password)
+        if(data){
+            alert('Log in successfull')
+            navigate('/')
+            window.location.reload(false);
+        } else {
+            alert('login fail')
     }
-
+}
     return (
         <div className="d-flex justify-content-center mt-4">
             <div className="col-4  bg-light border rounded border-dark-subtle p-4">

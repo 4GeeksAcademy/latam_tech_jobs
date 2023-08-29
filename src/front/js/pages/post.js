@@ -3,6 +3,7 @@ import React, { useState } from "react";
 export function Post() {
   const [questions, setQuestions] = useState([]); // Questions array
   const [selectedQuestion, setSelectedQuestion] = useState(""); // Selected question from dropdown
+  const [selectedExperience, setSelectedExperience] = useState(""); // Selected experience level
 
   const handleQuestionChange = (index, value) => {
     const newQuestions = [...questions];
@@ -22,6 +23,38 @@ export function Post() {
   const addSelectedQuestion = () => {
     if (selectedQuestion && selectedQuestion !== "custom") {
       setQuestions([...questions, selectedQuestion]); // Add selected question
+    }
+  };
+
+  // handle submit
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const formData = {
+      jobTitle: e.target.jobTitle.value,
+      jobDescription: e.target.jobDescription.value,
+      skills: e.target.skills.value,
+      jobType: e.target.jobType.value,
+      payRate: e.target.payRate.value,
+      experienceLevel: e.target.experienceLevel.value,
+      questions: questions,
+      companyName: e.target.companyName.value,
+      companyWebsite: e.target.companyWebsite.value,
+      companyCountry: e.target.companyCountry.value,
+      companyState: e.target.companyState.value,
+      companyCity: e.target.companyCity.value,
+    };
+    try {
+      const response = await fetch("http://localhost:3000/api", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.log("Error posting job: ", error);
     }
   };
 
@@ -81,7 +114,7 @@ export function Post() {
           <label htmlFor="jobType" className="form-label">
             Job type
           </label>
-          <select className="form-select mb-5" id="jobType">
+          <select className="form-select" id="jobType">
             <option value="full_time">Full-time (40 hrs/wk)</option>
             <option value="part_time">Part-time (20 hrs/wk)</option>
             <option value="contract">Contract</option>
@@ -98,6 +131,26 @@ export function Post() {
             id="payRate"
             placeholder="Enter the pay rate per hour ($ USD)"
           />
+        </div>
+        <div className="col-md-6">
+          <label htmlFor="experienceLevel" className="form-label">
+            Experience level required
+          </label>
+          <select
+            className="form-select mb-5"
+            id="experienceLevel"
+            value={selectedExperience}
+            onChange={(e) => setSelectedExperience(e.target.value)}
+          >
+            <option value="" disabled>
+              Select experience level
+            </option>
+            <option value="Junior">Junior (1+ years of experience)</option>
+            <option value="Mid-Level">
+              Mid-Level (3+ years of experience)
+            </option>
+            <option value="Senior">Senior (5+ years of experience)</option>
+          </select>
         </div>
       </form>
 
@@ -182,7 +235,7 @@ export function Post() {
           TELL US A LITTLE ABOUT YOUR COMPANY
         </h6>
       </div>
-      <form className="row g-3">
+      <form className="row g-3" onSubmit={handleSubmit}>
         <div className="col-md-6">
           <label htmlFor="companyName" className="form-label">
             Company name *

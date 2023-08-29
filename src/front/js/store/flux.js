@@ -1,7 +1,9 @@
+
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			message: null,
+			isMyTokenExpired: true,
 			demo: [
 				{
 					title: "FIRST",
@@ -21,24 +23,55 @@ const getState = ({ getStore, getActions, setStore }) => {
 				getActions().changeColor(0, "green");
 			},
 
-			login: async (email, password) => {
-				const resp = await fetch(process.env.BACKEND_URL + "/api/login",{
-					method: "POST",
-          			headers: { "Content-Type": "application/json" },
-          			body: JSON.stringify({ email: email, password: password }) 
-				})
-				if(!resp.ok) throw Error("There was a problem in the login request")
+			logout: ()=>{
+				localStorage.removeItem('jwt-token')
+			},
 
-				if(resp.status === 401){
-					 throw("Invalid credentials")
+			login: async (email, password) => {
+				try {
+					const resp = await fetch(process.env.BACKEND_URL + "/api/login",{
+						method: "POST",
+						  headers: { "Content-Type": "application/json" },
+						  body: JSON.stringify({ email: email, password: password }) 
+					})
+					if(!resp.ok) throw Error("There was a problem in the login request")
+	
+					if(resp.status === 401){
+						 throw("Invalid credentials")
+						 
+					}
+					const data = await resp.json()
+					localStorage.setItem("jwt-token", data.authorization);
+	
+					return resp
+				} catch (error) {
+					
 				}
-				else if(resp.status === 400){
-					 throw ("Invalid email or password format")
+			},
+
+			signup: async(new_user)=>{
+				try {
+					const resp = await fetch(process.env.BACKEND_URL + "/api/signup", {
+						method: "POST",
+						headers: {"Content-Type": "application/json"},
+						body: JSON.stringify(new_user)
+					})
+					if(!resp.ok) throw Error('There was a problem with your registration')
+					const data = await resp.json()
+					return data
+				} catch (error) {
+					console.error(error)
 				}
+				
+			},
+
+			validate_token: async(token)=>{
+				const resp = await fetch(process.env.BACKEND_URL + 'api/validate_token', {
+					method: "GET",
+					headers: {"Content-Type":"application/json", "Authorization": "Bearer " + token}
+				})
 				const data = await resp.json()
-				localStorage.setItem("jwt-token", data.authorization);
-		   
-				return console.log(data)
+				return data.isValid
 			},
 
 			getMessage: async () => {

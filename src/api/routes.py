@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User
+from api.models import db, User, Job
 from api.utils import generate_sitemap, APIException
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import create_access_token
@@ -22,8 +22,9 @@ def handle_hello():
 
     return jsonify(response_body), 200
 
-@api.route('/register', methods=['POST'])
+@api.route('/signup', methods=['POST'])
 def register():
+    user_name = request.json.get("user_name", None)
     company_name = request.json.get("company_name", None)
     password = request.json.get("password", None)
     company_description = request.json.get("company_description", None)
@@ -36,10 +37,10 @@ def register():
 
     if email and password: 
         pw_hash = bcrypt.generate_password_hash(password).decode('utf-8')
-        new_user = User(company_name = company_name, password_hash = pw_hash, company_description = company_description, phone = phone, email = email, country = country, address = address, website = website, linkedin = linkedin)
+        new_user = User(user_name = user_name, company_name = company_name, password_hash = pw_hash, company_description = company_description, phone = phone, email = email, country = country, address = address, website = website, linkedin = linkedin)
         db.session.add(new_user)
         db.session.commit()
-        return jsonify({'message': "user registered successfully"}), 201
+        return jsonify({'message': "user registered successfully"}), 200
     else:
         return jsonify({'messge': "error"}), 401
     
@@ -56,10 +57,37 @@ def login():
     else:
         return jsonify({"message": "authentication failed"}), 401
     
-@api.route('/protected', methods=['GET'])
+@api.route('/validate_token', methods=['GET'])
 @jwt_required()
-def protected():
+def validate_token():
     current_user_email = get_jwt_identity()
     user = User.query.filter_by(email = current_user_email).first()
+    if user:
+        return jsonify({"logged in as :": user.company_name, "isValid": True}), 200
+    else:
+        return jsonify({"message:": "error in token validation", "isValid": False}), 400
 
-    return jsonify({"logged in as :": user.company_name})
+@api.route("/submitjob", methods=["POST"])
+def submitjob():
+    data = request.json
+
+    job = Job(
+        job_title=data["jobTitle"],
+        job_description=data["jobDescription"],
+        skills=data["skills"],
+        job_type=data["jobType"],
+        pay_rate=data["payRate"],
+        experience_level=data["experienceLevel"], 
+        questions="\n".join(data["questions"]),
+        company_name=data["companyName"],
+        company_website=data["companyWebsite"],
+        company_country=data["companyCountry"],
+        company_state=data["companyState"],
+        company_city=data["companyCity"]
+    )
+    if job:
+        db.session.add(job)
+        db.session.commit()
+        return jsonify({"message": "Job posted successfully"})
+    
+    return jsonify({"Error Message:": "Error creating job"})
