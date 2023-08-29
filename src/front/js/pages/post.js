@@ -45,19 +45,18 @@ export function Post() {
       companyState: e.target.companyState.value,
       companyCity: e.target.companyCity.value,
     };
-  try {
-    const response = await fetch("http://localhost:3000/api", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
-    const data = await response.json();
-    console.log(data);
-  } catch (error) {
-    console.log("Error posting job: ", error);
-  }
-};
-
+    try {
+      const response = await fetch("http://localhost:3000/api", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.log("Error posting job: ", error);
+    }
+  };
 
   return (
     <div className="container mt-5">
@@ -147,7 +146,9 @@ export function Post() {
               Select experience level
             </option>
             <option value="Junior">Junior (1+ years of experience)</option>
-            <option value="Mid-Level">Mid-Level (3+ years of experience)</option>
+            <option value="Mid-Level">
+              Mid-Level (3+ years of experience)
+            </option>
             <option value="Senior">Senior (5+ years of experience)</option>
           </select>
         </div>
