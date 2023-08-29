@@ -11,14 +11,14 @@ export const Navbar = () => {
 				<div className="p-2">
 				</div>
 				<div className="row float-right text-decoration-none">
-					<ul className="col-md nav navbar-nav navbar-right text-decoration-none float-left"  style={{paddingTop: 30}}>
+					<ul className="col-md nav navbar-nav navbar-right text-decoration-none float-left"  style={{paddingTop: 20}}>
 						<li><a href="#" className="text-decoration-none"><i class="fa-solid fa-right-to-bracket"></i><Link to={'/login'} className="text-decoration-none">Login</Link></a></li>
 					</ul>
-					<ul className="col-md nav navbar-nav navbar-right"  style={{paddingTop: 30}}>
+					<ul className="col-md nav navbar-nav navbar-right"  style={{paddingTop: 20}}>
 						<li><a href="#" className="text-decoration-none"><i class="fa-solid fa-user-plus"></i><Link to={'/signup'} className="text-decoration-none">Sing-up</Link></a></li>
 					</ul>
-					<ul className="col-md nav navbar-nav navbar-right p-2" style={{width: 120}}>
-						<button type="button" className="btn btn-primary text-decoration-none"><Link to={'/post'} className="text-decoration-none"><p className="text-black">Post a job</p></Link></button>
+					<ul className="col-md nav navbar-nav navbar-right p-2" style={{width: 180}}>
+						<button type="button" className="btn btn-primary text-decoration-none" style={{height: 40}}><Link to={'/post'} className="text-decoration-none"><p className="text-white">Post a job</p></Link></button>
 					</ul>
 				</div>
 			</nav>
