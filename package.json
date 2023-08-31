@@ -75,9 +75,12 @@
 	"dependencies": {
 		"@emailjs/browser": "^3.11.0",
 		"emailjs": "^4.0.2",
+		"firebase": "^10.3.0",
+		"firebase-admin": "^11.10.1",
 		"prop-types": "^15.6.1",
 		"react": "^16.8.4",
 		"react-dom": "^16.8.4",
+		"react-google-button": "^0.7.2",
 		"react-jwt": "^1.2.0",
 		"react-polyfills": "0.0.1",
 		"react-router-dom": "^6.3.0"
