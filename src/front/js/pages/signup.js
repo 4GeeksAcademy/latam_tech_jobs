@@ -42,34 +42,34 @@ export function SignUp(){
         <div className="d-flex">
             <div className="d-flex flex-column col-6 p-4">
                 <div class="mb-3">
-                    <label for="inputCompanyName" class="form-label"><i class="fa-regular fa-building"></i> Company Name</label>
+                    <label htmlFor="inputCompanyName" class="form-label"><i class="fa-regular fa-building"></i> Company Name</label>
                     <input onChange={(e)=>{setCompany_name(e.target.value)}} type="text" class="form-control" id="inputCompanyName" required/>
                     <div class="invalid-feedback">Example invalid form file feedback</div>
                 </div>
                 <div class="mb-3">
-                    <label for="inputFullName" class="form-label"><i class="fa-solid fa-user"></i> Full Name</label>
+                    <label htmlFor="inputFullName" class="form-label"><i class="fa-solid fa-user"></i> Full Name</label>
                     <input onChange={(e)=>{setUsername(e.target.value)}} type="text" class="form-control" id="inputFullName" required/>
                 </div>
                 <div class="mb-3">
-                    <label for="inputEmail" class="form-label"><i class="fa-solid fa-envelope"></i> Email</label>
+                    <label htmlFor="inputEmail" class="form-label"><i class="fa-solid fa-envelope"></i> Email</label>
                     <input onChange={(e)=>{setEmail(e.target.value)}} type="text" class="form-control" id="inputEmail" required/>
                 </div>
                 <div class="mb-3">
-                    <label for="exampleInputPassword" class="form-label"><i class="fa-solid fa-key"></i> Password</label>
+                    <label htmlFor="exampleInputPassword" class="form-label"><i class="fa-solid fa-key"></i> Password</label>
                     <input onChange={(e)=>{setPassword(e.target.value)}} type="password" class="form-control" id="exampleInputPassword" required/>
                 </div>
                 <div class="mb-3">
-                    <label for="exampleInputPassword2" class="form-label"><i class="fa-solid fa-key"></i> Repeat Password</label>
+                    <label htmlFor="exampleInputPassword2" class="form-label"><i class="fa-solid fa-key"></i> Repeat Password</label>
                     <input type="password" class="form-control" id="exampleInputPassword2" required/>
                 </div>
             </div>
             <div className="d-flex flex-column col-6 p-4">
                 <div class="mb-3">
-                    <label for="inputPhone" class="form-label"><i class="fa-solid fa-phone"></i> Telephone</label>
+                    <label htmlFor="inputPhone" class="form-label"><i class="fa-solid fa-phone"></i> Telephone</label>
                     <input onChange={(e)=>{setPhone(e.target.value)}} type="text" class="form-control" id="inputPhone" required/>
                 </div>
                 <div className="mb-3">
-                    <label for="inputCountry" class="form-label"><i class="fa-solid fa-earth-americas"></i> Country</label>
+                    <label htmlFor="inputCountry" class="form-label"><i class="fa-solid fa-earth-americas"></i> Country</label>
                     <select onChange={(e)=>{setCountry(e.target.value)}} class="form-select" aria-label="Default select example" required>
                         <option selected>Select your country</option>
                         {
@@ -78,15 +78,15 @@ export function SignUp(){
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label for="inputAddress" class="form-label"><i class="fa-solid fa-location-dot"></i> Address</label>
+                    <label htmlFor="inputAddress" class="form-label"><i class="fa-solid fa-location-dot"></i> Address</label>
                     <input onChange={(e)=>{setAddress(e.target.value)}} type="text" class="form-control" id="inputAddress" required/>
                 </div>
                 <div class="mb-3">
-                    <label for="inputWebsite" class="form-label"><i class="fa-solid fa-cloud"></i> Website</label>
+                    <label htmlFor="inputWebsite" class="form-label"><i class="fa-solid fa-cloud"></i> Website</label>
                     <input onChange={(e)=>{setWebsite(e.target.value)}} type="text" class="form-control" id="inputWebsite"/>
                 </div>
                 <div class="mb-3">
-                    <label for="inputLinkedIn" class="form-label"><i class="fa-brands fa-linkedin"></i> LinkedIn</label>
+                    <label htmlFor="inputLinkedIn" class="form-label"><i class="fa-brands fa-linkedin"></i> LinkedIn</label>
                     <input onChange={(e)=>{setLinkedin(e.target.value)}} type="text" class="form-control" id="inputLinkedIn"/>
                 </div>
             </div>
