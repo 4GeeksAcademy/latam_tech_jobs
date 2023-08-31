@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 import { useNavigate } from "react-router-dom";
@@ -24,7 +24,6 @@ export const Navbar = () => {
     window.location.reload(false);
   };
 
-export const Navbar = () => {
 	return (
 		<>
 			<nav className="navbar navbar-light bg-light mb-3 container-fluid">
@@ -64,4 +63,4 @@ export const Navbar = () => {
 			</nav>
 		</>
 	);
-};
+}
