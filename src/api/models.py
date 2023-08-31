@@ -34,6 +34,7 @@ class Job(db.Model):
             "company_website": self.company_website,
             "company_country": self.company_country,
             "company_city": self.company_city,
+            "job_type": self.job_type,
             "creation_date": self.creation_date
         }
 

@@ -118,3 +118,39 @@ def submitjob():
         return jsonify({"message": "Job posted successfully"})
     
     return jsonify({"Error Message:": "Error creating job"})
+
+@api.route("/jobs", methods=["GET"])
+def get_jobs():
+    min = request.args.get("min")
+    max = request.args.get("max")
+    company = request.args.get("company")
+    type = request.args.get("type")
+
+    if min and max and company and type:
+        Jobs = db.session.query(Job).filter(Job.pay_rate >= min, Job.pay_rate <= max, Job.company_name == company, Job.job_type == type)
+        json = [job.serialize() for job in Jobs]
+        return json, 200
+    if min and max and company:
+        Jobs = db.session.query(Job).filter(Job.pay_rate >= min, Job.pay_rate <= max, Job.company_name == company)
+        json = [job.serialize() for job in Jobs]
+        return json, 200
+    if min and max:
+        Jobs = db.session.query(Job).filter(Job.pay_rate >= min, Job.pay_rate <= max)
+        json = [job.serialize() for job in Jobs]
+        return json, 200
+    if company and type:
+        Jobs = db.session.query(Job).filter(Job.company_name == company, Job.job_type == type)
+        json = [job.serialize() for job in Jobs]
+        return json, 200 
+    if company:
+        Jobs = db.session.query(Job).filter(Job.company_name == company)
+        json = [job.serialize() for job in Jobs]
+        return json, 200 
+    if type:
+        Jobs = db.session.query(Job).filter(Job.job_type == type)
+        json = [job.serialize() for job in Jobs]
+        return json, 200         
+    else:
+        Jobs = Job.query.all()
+        json = [job.serialize() for job in Jobs]
+        return json, 200

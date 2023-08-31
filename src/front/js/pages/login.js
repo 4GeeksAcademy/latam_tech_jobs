@@ -50,8 +50,8 @@ export function Login() {
         }
 
         const data = await actions.login(email, password);
-        if (data.authorization) {
-            alert('Log in successful');
+        if (data) {
+            alert('Log in zsuccessful');
             navigate('/');
             window.location.reload(false);
         } else {
