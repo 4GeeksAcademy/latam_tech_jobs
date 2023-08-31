@@ -8,10 +8,17 @@ from flask_bcrypt import Bcrypt
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
+from google.oauth2 import id_token
+from google.auth.transport import requests
+from firebase_admin import auth
+import firebase_admin
+from firebase_admin import credentials
 
 api = Blueprint('api', __name__)
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
+
+cred = credentials.Certificate('src/api/credentials.json')
 
 @api.route('/hello', methods=['POST', 'GET'])
 def handle_hello():
@@ -66,6 +73,26 @@ def validate_token():
         return jsonify({"logged in as :": user.company_name, "isValid": True}), 200
     else:
         return jsonify({"message:": "error in token validation", "isValid": False}), 400
+
+@api.route('/google_login', methods=['POST'])
+def google_login():
+    token = request.json.get("token", None)
+    try:
+        cred = credentials.Certificate('src/api/credentials.json')
+        firebase_admin.initialize_app(cred)
+
+        decoded_token = auth.verify_id_token(token)
+        email = decoded_token['email']
+        
+        user = User.query.filter_by(email=email).first()
+        if user:
+            token = create_access_token(identity=email)
+            return jsonify({"message": "logged in successfully", "authorization": token}), 200
+        else:
+            return jsonify({"message": "user not registered"}), 401
+    except auth.InvalidIdTokenError:
+        return jsonify({"message": "invalid token"}), 401
+
 
 @api.route("/submitjob", methods=["POST"])
 def submitjob():

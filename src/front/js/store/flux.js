@@ -28,36 +28,40 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			login: async (email, password) => {
-				const resp = await fetch(process.env.BACKEND_URL + "/api/login",{
-					method: "POST",
-          			headers: { "Content-Type": "application/json" },
-          			body: JSON.stringify({ email: email, password: password }) 
-				})
-				if(!resp.ok) throw Error("There was a problem in the login request")
-
-				if(resp.status === 401){
-					 throw("Invalid credentials")
-					 
+				try {
+					const resp = await fetch(process.env.BACKEND_URL + "/api/login",{
+						method: "POST",
+						  headers: { "Content-Type": "application/json" },
+						  body: JSON.stringify({ email: email, password: password }) 
+					})
+					if(!resp.ok) throw Error("There was a problem in the login request")
+	
+					if(resp.status === 401){
+						 throw("Invalid credentials")
+						 
+					}
+					const data = await resp.json()
+					localStorage.setItem("jwt-token", data.authorization);
+	
+					return resp
+				} catch (error) {
+					
 				}
-				else if(resp.status === 400){
-					 throw ("Invalid email or password format")
-					 
-				}
-				const data = await resp.json()
-				localStorage.setItem("jwt-token", data.authorization);
-
-				return resp
 			},
 
 			signup: async(new_user)=>{
-				const resp = await fetch(process.env.BACKEND_URL + "/api/signup", {
-					method: "POST",
-					headers: {"Content-Type": "application/json"},
-					body: JSON.stringify(new_user)
-				})
-				if(!resp.ok) throw Error('There was a problem with your registration')
-				const data = await resp.json()
-				return resp
+				try {
+					const resp = await fetch(process.env.BACKEND_URL + "/api/signup", {
+						method: "POST",
+						headers: {"Content-Type": "application/json"},
+						body: JSON.stringify(new_user)
+					})
+					if(!resp.ok) throw Error('There was a problem with your registration')
+					const data = await resp.json()
+					return data
+				} catch (error) {
+					console.error(error)
+				}
 				
 			},
 
