@@ -125,7 +125,11 @@ def get_jobs():
     max = request.args.get("max")
     company = request.args.get("company")
     type = request.args.get("type")
+    id = request.args.get("id")
 
+    if id:
+        job = Job.query.filter_by(id = id).first()
+        return jsonify(job.serialize()), 200
     if min and max and company and type:
         Jobs = db.session.query(Job).filter(Job.pay_rate >= min, Job.pay_rate <= max, Job.company_name == company, Job.job_type == type)
         json = [job.serialize() for job in Jobs]

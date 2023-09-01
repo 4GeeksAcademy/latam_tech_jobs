@@ -54,7 +54,7 @@ const Layout = () => {
                 path="/post"
               />
               <Route element={<SignUp />} path="/signup" />
-              <Route element={<Apply />} path="/apply" />
+              <Route element={<Apply />} path="/apply/:id" />
             </Routes>
             <Footer />
           </AuthProvider>
