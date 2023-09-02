@@ -1,9 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { Context } from "../store/appContext";
 
 export function Post() {
-  const [questions, setQuestions] = useState([]); // Questions array
-  const [selectedQuestion, setSelectedQuestion] = useState(""); // Selected question from dropdown
-  const [selectedExperience, setSelectedExperience] = useState(""); // Selected experience level
+  const [jobTitle, setJobTitle] = useState("");
+  const [jobDescription, setJobDescription] = useState("");
+  const [skills, setSkills] = useState("");
+  const [jobType, setJobType] = useState("full_time"); // Default value
+  const [payRate, setPayRate] = useState("");
+  const [selectedExperience, setSelectedExperience] = useState("");
+  const [selectedQuestion, setSelectedQuestion] = useState("");
+  const [customQuestion, setCustomQuestion] = useState("");
+  const [questions, setQuestions] = useState([]);
+  const [companyName, setCompanyName] = useState("");
+  const [companyWebsite, setCompanyWebsite] = useState("");
+  const [companyCountry, setCompanyCountry] = useState("");
+  const [companyState, setCompanyState] = useState("");
+  const [companyCity, setCompanyCity] = useState("");
+  const { store, actions } = useContext(Context);
 
   const handleQuestionChange = (index, value) => {
     const newQuestions = [...questions];
@@ -27,44 +40,37 @@ export function Post() {
   };
 
   // handle submit
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const formData = {
-      jobTitle: e.target.jobTitle.value,
-      jobDescription: e.target.jobDescription.value,
-      skills: e.target.skills.value,
-      jobType: e.target.jobType.value,
-      payRate: e.target.payRate.value,
-      experienceLevel: e.target.experienceLevel.value,
+    const job = {
+      job_title: jobTitle,
+      job_description: jobDescription,
+      skills: skills,
+      job_type: jobType,
+      pay_rate: payRate,
+      experience_level: selectedExperience,
       questions: questions,
-      companyName: e.target.companyName.value,
-      companyWebsite: e.target.companyWebsite.value,
-      companyCountry: e.target.companyCountry.value,
-      companyState: e.target.companyState.value,
-      companyCity: e.target.companyCity.value,
+      company_name: companyName,
+      company_website: companyWebsite,
+      company_country: companyCountry,
+      company_state: companyState,
+      company_city: companyCity,
     };
-    try {
-      const response = await fetch("http://localhost:3000/api", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-      const data = await response.json();
-      console.log(data);
-    } catch (error) {
-      console.log("Error posting job: ", error);
+    console.log(job);
+    const resp = await actions.submitJob(job)
+    if (resp) {
+      alert("succesful")
+    } else {
+      alert("error")
     }
   };
 
   return (
     <div className="container mt-5">
       <h1 className="h1-title d-flex justify-content-start mb-5">Post a Job</h1>
-
       {/* TELL US ABOUT YOUR JOB */}
       <h6>TELL US ABOUT YOUR JOB</h6>
-      <form className="row g-3">
+      <form onSubmit={handleSubmit} className="row g-3">
         <div className="col-md-6">
           <label htmlFor="jobTitle" className="form-label">
             Job title *
@@ -73,8 +79,11 @@ export function Post() {
             type="text"
             className="form-control"
             id="jobTitle"
+            name="jobTitle"
             required
             placeholder="Enter job title"
+            value={jobTitle}
+            onChange={(e) => setJobTitle(e.target.value)}
           />
         </div>
         <div className="col-md-6">
@@ -84,12 +93,14 @@ export function Post() {
           <textarea
             className="form-control"
             id="jobDescription"
+            name="jobDescription"
             required
             placeholder="Describe your job"
+            value={jobDescription}
+            onChange={(e) => setJobDescription(e.target.value)}
           ></textarea>
         </div>
       </form>
-
       {/* WHAT ARE THE JOB REQUIREMENTS? */}
       <h6>WHAT ARE THE JOB REQUIREMENTS?</h6>
       <form className="row g-3 mb-4">
@@ -101,12 +112,14 @@ export function Post() {
             type="text"
             className="form-control"
             id="skills"
+            name="skills"
             required
             placeholder="Enter required skills"
+            value={skills}
+            onChange={(e) => setSkills(e.target.value)}
           />
         </div>
       </form>
-
       {/* WHAT DOES THIS JOB PAY? */}
       <h6 className="h6-title">WHAT DOES THIS JOB PAY?</h6>
       <form className="row g-3">
@@ -114,7 +127,13 @@ export function Post() {
           <label htmlFor="jobType" className="form-label">
             Job type
           </label>
-          <select className="form-select" id="jobType">
+          <select
+            className="form-select"
+            id="jobType"
+            name="jobType"
+            value={jobType}
+            onChange={(e) => setJobType(e.target.value)}
+          >
             <option value="full_time">Full-time (40 hrs/wk)</option>
             <option value="part_time">Part-time (20 hrs/wk)</option>
             <option value="contract">Contract</option>
@@ -129,7 +148,10 @@ export function Post() {
             type="number"
             className="form-control"
             id="payRate"
+            name="payRate"
             placeholder="Enter the pay rate per hour ($ USD)"
+            value={payRate}
+            onChange={(e) => setPayRate(e.target.value)}
           />
         </div>
         <div className="col-md-6">
@@ -139,6 +161,7 @@ export function Post() {
           <select
             className="form-select mb-5"
             id="experienceLevel"
+            name="experienceLevel"
             value={selectedExperience}
             onChange={(e) => setSelectedExperience(e.target.value)}
           >
@@ -146,14 +169,11 @@ export function Post() {
               Select experience level
             </option>
             <option value="Junior">Junior (1+ years of experience)</option>
-            <option value="Mid-Level">
-              Mid-Level (3+ years of experience)
-            </option>
+            <option value="Mid-Level">Mid-Level (3+ years of experience)</option>
             <option value="Senior">Senior (5+ years of experience)</option>
           </select>
         </div>
       </form>
-
       {/* WHAT QUESTIONS DO YOU WANT TO ASK CANDIDATES? */}
       <h6>WHAT QUESTIONS DO YOU WANT TO ASK CANDIDATES?</h6>
       <form className="row g-3">
@@ -174,8 +194,7 @@ export function Post() {
               Can you list a few related projects you've worked on in the past?
             </option>
             <option value="Can you please share a few links that would allow us to see the quality of your work?">
-              Can you please share a few links that would allow us to see the
-              quality of your work?
+              Can you please share a few links that would allow us to see the quality of your work?
             </option>
             <option value="What makes you stand out against other candidates?">
               What makes you stand out against other candidates?
@@ -195,6 +214,8 @@ export function Post() {
                 name="customQuestion"
                 rows="2"
                 placeholder="Enter your custom question"
+                value={customQuestion}
+                onChange={(e) => setCustomQuestion(e.target.value)}
               ></textarea>
               <button type="submit" className="btn btn-primary mt-3">
                 Add Custom Question
@@ -219,6 +240,7 @@ export function Post() {
             <textarea
               className="form-control"
               id={`question${index + 1}`}
+              name={`question${index + 1}`}
               rows="3"
               value={question}
               onChange={(e) => handleQuestionChange(index, e.target.value)}
@@ -228,12 +250,9 @@ export function Post() {
           </div>
         ))}
       </form>
-
       {/* TELL US A LITTLE ABOUT YOUR COMPANY */}
       <div className="mt-5">
-        <h6 className="tell-us-title mt-6">
-          TELL US A LITTLE ABOUT YOUR COMPANY
-        </h6>
+        <h6 className="tell-us-title mt-6">TELL US A LITTLE ABOUT YOUR COMPANY</h6>
       </div>
       <form className="row g-3" onSubmit={handleSubmit}>
         <div className="col-md-6">
@@ -244,8 +263,11 @@ export function Post() {
             type="text"
             className="form-control"
             id="companyName"
+            name="companyName"
             required
             placeholder="Enter the name of the company"
+            value={companyName}
+            onChange={(e) => setCompanyName(e.target.value)}
           />
         </div>
         <div className="col-md-6">
@@ -256,8 +278,11 @@ export function Post() {
             type="url"
             className="form-control"
             id="companyWebsite"
+            name="companyWebsite"
             required
             placeholder="Enter the company website URL"
+            value={companyWebsite}
+            onChange={(e) => setCompanyWebsite(e.target.value)}
           />
         </div>
         <div className="col-md-6">
@@ -268,8 +293,11 @@ export function Post() {
             type="text"
             className="form-control"
             id="companyCountry"
+            name="companyCountry"
             required
             placeholder="Enter company country"
+            value={companyCountry}
+            onChange={(e) => setCompanyCountry(e.target.value)}
           />
         </div>
         <div className="col-md-6">
@@ -280,8 +308,11 @@ export function Post() {
             type="text"
             className="form-control"
             id="companyState"
+            name="companyState"
             required
             placeholder="Enter company state/region"
+            value={companyState}
+            onChange={(e) => setCompanyState(e.target.value)}
           />
         </div>
         <div className="col-md-6">
@@ -292,8 +323,11 @@ export function Post() {
             type="text"
             className="form-control"
             id="companyCity"
+            name="companyCity"
             required
             placeholder="Enter company city"
+            value={companyCity}
+            onChange={(e) => setCompanyCity(e.target.value)}
           />
         </div>
         <div className="col-md-12 mb-6">
