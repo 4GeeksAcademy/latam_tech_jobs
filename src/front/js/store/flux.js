@@ -112,6 +112,25 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
+			submitJob: async (job)=>{
+				const token = localStorage.getItem('jwt-token') 
+			   try {
+				   const resp = await fetch(process.env.BACKEND_URL + '/api/submitjob',{
+					   method: "POST",
+					   headers: {
+						   "Content-Type": "application/json",
+						   "Authorization": "Bearer " + token
+					   },
+					   body: JSON.stringify(job)
+				   }) 
+				   const data = resp.json()
+				   return data
+			   } catch (error) {
+					console.error("Error in submitJob:", error);
+					throw error;
+			   }
+		   },
+
 			getMessage: async () => {
 				try{
 					// fetching data from the backend

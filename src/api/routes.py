@@ -93,31 +93,35 @@ def google_login():
     except auth.InvalidIdTokenError:
         return jsonify({"message": "invalid token"}), 401
 
-
 @api.route("/submitjob", methods=["POST"])
+@jwt_required()
 def submitjob():
     data = request.json
-
+    current_user_email = get_jwt_identity()
+    user = User.query.filter_by(email = current_user_email).first()
     job = Job(
-        job_title=data["jobTitle"],
-        job_description=data["jobDescription"],
+        job_title=data["job_title"],
+        job_description=data["job_description"],
         skills=data["skills"],
-        job_type=data["jobType"],
-        pay_rate=data["payRate"],
-        experience_level=data["experienceLevel"], 
+        job_type=data["job_type"],
+        pay_rate=data["pay_rate"],
+        experience_level=data["experience_level"], 
         questions="\n".join(data["questions"]),
-        company_name=data["companyName"],
-        company_website=data["companyWebsite"],
-        company_country=data["companyCountry"],
-        company_state=data["companyState"],
-        company_city=data["companyCity"]
+        company_name=data["company_name"],
+        company_website=data["company_website"],
+        company_country=data["company_country"],
+        company_state=data["company_state"],
+        company_city=data["company_city"],
+        user_id = user.id
     )
+
     if job:
         db.session.add(job)
         db.session.commit()
         return jsonify({"message": "Job posted successfully"})
-    
+        
     return jsonify({"Error Message:": "Error creating job"})
+
 
 @api.route("/jobs", methods=["GET"])
 def get_jobs():
