@@ -8,7 +8,7 @@ export const Filter = () => {
             <div className="header text-left">
                 <h1>Filters: </h1>
             </div>
-            <div className="container d-flex" style={{ width: 100, marginLeft: -30 }}>
+            <div className="container d-flex">
                 <ul className="list-group border border-warning">
                     <li className="list-group-item border border-warning">
                         <h3><bold>Skills</bold></h3>
