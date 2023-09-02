@@ -27,6 +27,7 @@ class Job(db.Model):
         return {
             "id": self.id,
             "job_title": self.job_title,
+            "job_description": self.job_description,
             "pay_rate": self.pay_rate,
             "experience_level": self.experience_level,
             "questions": self.questions,

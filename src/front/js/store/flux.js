@@ -4,6 +4,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 		store: {
 			message: null,
 			isMyTokenExpired: true,
+			jobs: [],
+			single_job: {},
 			demo: [
 				{
 					title: "FIRST",
@@ -72,6 +74,42 @@ const getState = ({ getStore, getActions, setStore }) => {
 				})
 				const data = await resp.json()
 				return data.isValid
+			},
+
+			get_jobs: async(params)=>{
+				const store = getStore()
+				try {
+					const resp = await fetch(process.env.BACKEND_URL + '/api/jobs' + params, {
+						method: "GET",
+					})
+					const data = await resp.json()
+					setStore({
+						jobs: data
+					})
+					console.log(store.jobs)
+					return data
+
+				} catch (error) {
+					console.error(error)
+				}
+
+			},
+
+			get_single_job: async(id)=>{
+				const store = getStore()
+				try {
+					const resp = await fetch(process.env.BACKEND_URL + '/api/jobs?id=' + id,{
+						method: "GET",
+					})
+					const data = await resp.json()
+					console.log(data)
+					setStore({
+						single_job: data
+					})
+					console.log(store.single_job)
+				} catch (error) {
+					console.error(error)
+				}
 			},
 
 			getMessage: async () => {

@@ -1,10 +1,16 @@
-import React, {useRef} from "react";
+import React, {useRef, useContext, useEffect} from "react";
 import emailjs from '@emailjs/browser';
 import { useNavigate } from "react-router-dom";
+import { Context } from "../store/appContext";
+import { useParams } from "react-router-dom";
 
-export function Apply(){
+
+export const Apply = () => {
     const form = useRef()
     const navigate = useNavigate()
+    const { store, actions } = useContext(Context);
+    const params = useParams()
+    useEffect(()=>{actions.get_single_job(params.id)},[])
 
     const sendEmail = (e)=>{
         e.preventDefault()
@@ -21,6 +27,11 @@ export function Apply(){
     };
     return (
         <form ref={form} onSubmit={sendEmail} className="container-md d-flex flex-column justify-content-center border border-dark-subtle p-4 mt-3 bg-light rounded">
+            <div class="row g-3 justify-content-center mb-5">
+                <div class="col-12">
+                    <p className="text-center fs-4 text">You are applying to the <strong>{store.single_job.job_title}</strong> job at <strong>{store.single_job.company_name}</strong>!</p>
+                </div>
+            </div>
             <div class="row g-3 justify-content-around mb-3">
                 <div class="col-3">
                     <label for="inputPassword6" class="col-form-label"><i class="fa-solid fa-suitcase"></i> Resume/CV</label>
