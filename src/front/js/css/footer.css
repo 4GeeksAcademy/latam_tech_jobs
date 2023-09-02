@@ -1,0 +1,4 @@
+.text-black {
+    text-decoration: none; /* Remove underlines */
+    color: black; /* Set the color of the links to black (or any other color you prefer) */
+  }
