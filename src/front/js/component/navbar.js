@@ -46,33 +46,45 @@ export const Navbar = () => {
 
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ms-auto">
-            <li className="nav-item">
-              <Link to="/" className="nav-link active">
-                Home
-              </Link>
-            </li>
-            <li className="nav-item">
-              <a href="#about" className="nav-link">
-                Register
-              </a>
-            </li>
-            <div className="d-flex align-items-center">
-              {user?.displayName ? (
-                <>
-                  <span className="mx-2">Hello, {user.displayName}</span>
+            {user ? (
+              <>
+                <li className="nav-item">
+                  <span className="nav-link">Hello, {user.displayName}</span>
+                </li>
+                <li className="nav-item">
+                  <button className="btn btn-primary mx-2">
+                    <Link
+                      to="/submitjob"
+                      className="text-white"
+                      style={{ textDecoration: "none" }}
+                    >
+                      Post Job
+                    </Link>
+                  </button>
+                </li>
+                <li className="nav-item">
                   <button
                     onClick={handleLogoutClick}
-                    className="btn btn-primary ml-2"
+                    className="btn btn-warning ml-2"
                   >
                     Sign Out
                   </button>
-                </>
-              ) : (
-                <button onClick={googleSignIn} className="btn btn-primary">
+                </li>
+              </>
+            ) : (
+              <li className="nav-item">
+                <button onClick={googleSignIn} className="btn btn-success">
                   Login
                 </button>
-              )}
-            </div>
+              </li>
+            )}
+            {!user && (
+              <li className="nav-item">
+                <Link to="/signup" className="nav-link">
+                  Register
+                </Link>
+              </li>
+            )}
           </ul>
         </div>
       </div>
