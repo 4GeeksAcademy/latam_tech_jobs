@@ -74,11 +74,13 @@
 	},
 	"dependencies": {
 		"@emailjs/browser": "^3.11.0",
+		"bootstrap": "^5.3.1",
 		"emailjs": "^4.0.2",
 		"firebase": "^10.3.0",
 		"firebase-admin": "^11.10.1",
 		"prop-types": "^15.6.1",
 		"react": "^16.8.4",
+		"react-bootstrap": "^2.8.0",
 		"react-dom": "^16.8.4",
 		"react-google-button": "^0.7.2",
 		"react-jwt": "^1.2.0",

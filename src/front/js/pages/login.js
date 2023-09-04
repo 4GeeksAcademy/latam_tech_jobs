@@ -3,13 +3,33 @@ import { Context } from "../store/appContext";
 import { useNavigate } from "react-router-dom";
 import { GoogleButton } from 'react-google-button'
 import { useAuth } from "../store/authContext";
+import 'bootstrap/dist/css/bootstrap.min.css'; 
+import { Button, Modal } from 'react-bootstrap'; 
 
 
 export function Login() {
     const { googleSignIn, user } = useAuth();
-    const { actions } = useContext(Context);
+    const { store, actions } = useContext(Context);
     const navigate = useNavigate();
-    
+    const [showModal, setShowModal] = useState(false);
+    const [login, setLogin] = useState(false)
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleOpenModal = () => {
+      setShowModal(true);
+      setIsLoading(false)
+    };
+  
+    const handleCloseModal = () => {
+      setShowModal(false);
+      if (login){
+        navigate('/');
+        window.location.reload(false);
+      } else {
+        navigate('/login')
+      }
+      
+    };
 
     const handleGoogleSignIn = async () => {
         try {
@@ -43,24 +63,34 @@ export function Login() {
 
     const loginClick = async (e) => {
         e.preventDefault();
-
-        if (user) {
-            alert('You are already logged in.');
-            return;
-        }
-
+        setIsLoading(true);
         const data = await actions.login(email, password);
         if (data) {
-            alert('Log in zsuccessful');
-            navigate('/');
-            window.location.reload(false);
+            setLogin(true)
+            handleOpenModal()
         } else {
-            alert('Login failed');
+            setLogin(false)
+            handleOpenModal()
         }
     };
 
     return (
         <div className="d-flex justify-content-center mt-4">
+{/*Aqui inicia el modal*/}
+            <div>
+            <Modal show={showModal} onHide={handleCloseModal}>
+                <Modal.Header closeButton>
+                <Modal.Title>{login ? `Login successfull!` : `Error`}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>{login ? `You are logged in as ${store.user.user_name}`: `Username or password incorrect try again`}.</Modal.Body>
+                <Modal.Footer>
+                <Button variant="secondary" onClick={handleCloseModal}>
+                    Close
+                </Button>
+                </Modal.Footer>
+            </Modal>
+            </div>
+{/*Aqui termina el modal */}
             <div className="col-4  bg-light border rounded border-dark-subtle p-4">
                 <form>
                 <div className="mb-4 d-flex justify-content-center">
@@ -79,7 +109,9 @@ export function Login() {
                     <a href="#">Forgot password?</a>
                 </div>
                 <div className="d-flex justify-content-center mb-3">
-                    <button onClick = {(e)=>{loginClick(e)}} type="submit" className="btn btn-primary">Login</button>
+                    <button onClick = {(e)=>{loginClick(e)}} type="submit" className="btn btn-primary">
+                    {isLoading ? (<span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>) : ('Login')}
+                    </button>
                 </div>
                 <div className="d-flex justify-content-center">
                     <p>Or login with</p>   

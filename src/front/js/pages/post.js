@@ -1,5 +1,8 @@
 import React, { useState, useContext } from "react";
 import { Context } from "../store/appContext";
+import 'bootstrap/dist/css/bootstrap.min.css'; 
+import { Button, Modal } from 'react-bootstrap'; 
+import { useNavigate } from "react-router-dom";
 
 export function Post() {
   const [jobTitle, setJobTitle] = useState("");
@@ -17,6 +20,25 @@ export function Post() {
   const [companyState, setCompanyState] = useState("");
   const [companyCity, setCompanyCity] = useState("");
   const { store, actions } = useContext(Context);
+  const [showModal, setShowModal] = useState(false);
+  const [posted, setPosted] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate()
+
+  const handleOpenModal = () => {
+    setShowModal(true);
+    setIsLoading(false)
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    if (posted){
+      navigate('/');
+      window.location.reload(false);
+    } else {
+      navigate('/post')
+    }
+  }
 
   const handleQuestionChange = (index, value) => {
     const newQuestions = [...questions];
@@ -42,6 +64,7 @@ export function Post() {
   // handle submit
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true)
     const job = {
       job_title: jobTitle,
       job_description: jobDescription,
@@ -59,14 +82,31 @@ export function Post() {
     console.log(job);
     const resp = await actions.submitJob(job)
     if (resp) {
-      alert("succesful")
+      setPosted(true)
+      handleOpenModal()
     } else {
-      alert("error")
+      setPosted(false)
+      handleOpenModal()
     }
   };
 
   return (
     <div className="container mt-5">
+{/*Aqui inicia el modal*/}
+      <div>
+            <Modal show={showModal} onHide={handleCloseModal}>
+                <Modal.Header closeButton>
+                <Modal.Title>{posted ? `Success!` : `Error`}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>{posted ? `Your job was posted successfully!`: `There was a problem posting your job`}.</Modal.Body>
+                <Modal.Footer>
+                <Button variant="secondary" onClick={handleCloseModal}>
+                    Close
+                </Button>
+                </Modal.Footer>
+            </Modal>
+        </div>
+{/*Aqui termina el modal */}
       <h1 className="h1-title d-flex justify-content-start mb-5">Post a Job</h1>
       {/* TELL US ABOUT YOUR JOB */}
       <h6>TELL US ABOUT YOUR JOB</h6>
@@ -332,7 +372,7 @@ export function Post() {
         </div>
         <div className="col-md-12 mb-6">
           <button type="submit" className="btn btn-primary">
-            Submit
+          {isLoading ? (<span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>) : ('Submit')}
           </button>
         </div>
       </form>

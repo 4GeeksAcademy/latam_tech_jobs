@@ -1,6 +1,8 @@
 import React, {useContext, useState, useRef} from "react";
 import { Context } from "../store/appContext";
 import { useNavigate } from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css'; 
+import { Button, Modal } from 'react-bootstrap'; 
 
 export function SignUp(){
     const countries = ['Nicaragua', 'El Salvador', 'Guatemala', 'Costa Rica', 'Colombia', 'Panama', 'Honduras']
@@ -17,9 +19,28 @@ export function SignUp(){
     const [website, setWebsite] = useState()
     const [linkedin, setLinkedin] = useState()
     const navigate = useNavigate()
+    const [showModal, setShowModal] = useState(false);
+    const [signup, setSignup] = useState(false)
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleOpenModal = () => {
+      setShowModal(true);
+      setIsLoading(false)
+    };
+  
+    const handleCloseModal = () => {
+      setShowModal(false);
+      if (signup){
+        navigate('/login');
+        /*window.location.reload(false);*/
+      } else {
+        navigate('/signup')
+      }
+    }
 
     const handleSubmit = async (e)=>{
         e.preventDefault()
+        setIsLoading(true)
         const new_user = {
             "user_name": username,
             "company_name": company_name,
@@ -34,17 +55,32 @@ export function SignUp(){
         }
         const result = await actions.signup(new_user)
         if(result){
-            alert("successful sign up") 
-            navigate('/login')
-            window.location.reload(false); 
+            setSignup(true)
+            handleOpenModal()
         } else {
-            alert("Error")
+            setSignup(false)
+            handleOpenModal()
         }
         
     }
 
     return(
 <div className="container-md">
+{/*Aqui inicia el modal*/}
+        <div>
+            <Modal show={showModal} onHide={handleCloseModal}>
+                <Modal.Header closeButton>
+                <Modal.Title>{signup ? `You have sucessfully sign up!` : `Error`}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>{signup ? `Welcome to Latam Tech Jobs!`: `Incorrect or missing information try again`}.</Modal.Body>
+                <Modal.Footer>
+                <Button variant="secondary" onClick={handleCloseModal}>
+                    Close
+                </Button>
+                </Modal.Footer>
+            </Modal>
+        </div>
+{/*Aqui termina el modal */}
     <form ref={form} className="d-flex flex-column border border-dark-subtle p-4 mt-3 bg-light rounded">
         <div className="d-flex">
             <div className="d-flex flex-column col-6 p-4">
@@ -103,7 +139,9 @@ export function SignUp(){
                 <textarea onChange={(e)=>{setCompany_description(e.target.value)}} class="form-control" aria-label="With textarea" rows="5" required></textarea>
         </div>
         <div className="d-flex justify-content-center mt-4">
-            <button onClick={handleSubmit} type="submit" class="btn btn-primary">Submit</button>
+            <button onClick={handleSubmit} type="submit" class="btn btn-primary">
+            {isLoading ? (<span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>) : ('Submit')}
+            </button>
         </div>
     </form>
 </div>

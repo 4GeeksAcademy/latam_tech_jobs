@@ -1,8 +1,11 @@
-import React, {useRef, useContext, useEffect} from "react";
+import React, {useRef, useContext, useEffect, useState} from "react";
 import emailjs from '@emailjs/browser';
 import { useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 import { useParams } from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css'; 
+import { Button, Modal } from 'react-bootstrap'; 
+
 
 
 export const Apply = () => {
@@ -10,23 +13,62 @@ export const Apply = () => {
     const navigate = useNavigate()
     const { store, actions } = useContext(Context);
     const params = useParams()
+    const [showModal, setShowModal] = useState(false);
+    const [sent, setSent] = useState(false)
+    const [isLoading, setIsLoading] = useState(false);
     useEffect(()=>{actions.get_single_job(params.id)},[])
+
+    const handleOpenModal = () => {
+        setShowModal(true);
+        setIsLoading(false)
+      };
+    
+      const handleCloseModal = () => {
+        setShowModal(false);
+        if (sent){
+          navigate('/');
+          /*window.location.reload(false);*/
+        } else {
+          navigate('/apply')
+        }
+      }
+
 
     const sendEmail = (e)=>{
         e.preventDefault()
+        setIsLoading(true)        
         emailjs.sendForm('service_jop1cgf', 'template_idqa88j', form.current, 'xL0_Kaj6hkNyykj5i')
         .then((result) => {
-            console.log(result.text);
-            form.current.reset()
-            alert('Your message was sent to the Hiring Manager') 
-            navigate('/')
-        }, (error) => {
+            if(result){
+                setSent(true)
+                handleOpenModal()
+            } else {
+                setSent(false)
+                handleOpenModal()
+            }
+            
+        }, (error) => {            
             console.log(error.text);
-            alert('Error')
         });
     };
+
     return (
         <form ref={form} onSubmit={sendEmail} className="container-md d-flex flex-column justify-content-center border border-dark-subtle p-4 mt-3 bg-light rounded">
+{/*Aqui inicia el modal*/}
+        <div>
+            <Modal show={showModal} onHide={handleCloseModal}>
+                <Modal.Header closeButton>
+                <Modal.Title>{sent ? `Success!` : `Error`}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>{sent ? (<p>Your application to the <strong>{store.single_job.job_title}</strong> job has been sent!</p>): `There was a problem with your appliacation, try again`}.</Modal.Body>
+                <Modal.Footer>
+                <Button variant="secondary" onClick={handleCloseModal}>
+                    Close
+                </Button>
+                </Modal.Footer>
+            </Modal>
+        </div>
+{/*Aqui termina el modal */}
             <div class="row g-3 justify-content-center mb-5">
                 <div class="col-12">
                     <p className="text-center fs-4 text">You are applying to the <strong>{store.single_job.job_title}</strong> job at <strong>{store.single_job.company_name}</strong>!</p>
@@ -80,7 +122,9 @@ export const Apply = () => {
             </div>  
             <div class="row g-3 justify-content-around mb-3">
                 <div class="d-flex justify-content-center">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary">
+                    {isLoading ? (<span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>) : ('Submit')}
+                    </button>
                 </div>  
             </div>  
         </form>
