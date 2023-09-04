@@ -54,7 +54,7 @@ export const Navbar = () => {
                 <li className="nav-item">
                   <button className="btn btn-primary mx-2">
                     <Link
-                      to="/submitjob"
+                      to="/post"
                       className="text-white"
                       style={{ textDecoration: "none" }}
                     >

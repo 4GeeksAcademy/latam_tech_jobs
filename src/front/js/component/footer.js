@@ -17,9 +17,9 @@ export const Footer = () => (
             />
           </h5>
           <p>
-            Tech-Jobs Latin America is a job board for tech professionals in the
-            region. We are a community of developers and tech enthusiasts who
-            want to help each other grow and succeed.
+            Tech-Jobs Latin America is a remote job board for tech professionals in the
+            region. We want to assist companies in finding the best talent and
+            professionals in finding the best job opportunities in the region.
           </p>
         </div>
         <div className="col-md-2 mt-4">
