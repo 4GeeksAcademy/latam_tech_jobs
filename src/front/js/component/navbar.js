@@ -73,8 +73,14 @@ export const Navbar = () => {
               </>
             ) : (
               <li className="nav-item">
-                <button onClick={googleSignIn} className="btn btn-success">
-                  Login
+                <button className="btn btn-success">
+                <Link
+                      to="/login"
+                      className="text-white"
+                      style={{ textDecoration: "none" }}
+                    >
+                      Login
+                    </Link>                  
                 </button>
               </li>
             )}
