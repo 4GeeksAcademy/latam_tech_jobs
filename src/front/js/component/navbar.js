@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../store/authContext";
-import { GoogleButton } from "react-google-button";
 import logoNavbar from "../../img/logo-latamtj2.png";
 import "../css/navbar.css";
 
