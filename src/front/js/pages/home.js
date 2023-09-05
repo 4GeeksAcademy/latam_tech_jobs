@@ -89,7 +89,7 @@ export const Home = () => {
                 </Link>
               </div>
               <div className="card-footer text-body-secondary">
-                <Link to={`/job`}>More information..</Link>
+                <Link to={`/job/${job.id}`}>More information..</Link>
               </div>
             </div>
           ))}

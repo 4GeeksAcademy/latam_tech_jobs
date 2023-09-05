@@ -1,6 +1,11 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { Context } from "../store/appContext";
 
 export function Job() {
+  const {store, actions} = useContext(Context)
+  const params = useParams()
+  useEffect(()=>{actions.get_single_job(params.id)},[])
   const formData = {
     jobTitle: "Software Developer",
     jobDescription:
@@ -32,7 +37,7 @@ export function Job() {
           <i className="fas fa-file-alt"></i> Job Details
         </h6>
         <p>
-          <strong>Job Title:</strong> {formData.jobTitle}
+          <strong>Job Title:</strong> {store.single_job.job_title}
         </p>
         <p>
           <strong>Job Description:</strong> {formData.jobDescription}

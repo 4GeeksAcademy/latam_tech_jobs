@@ -42,7 +42,7 @@ const Layout = () => {
               <Route element={<Home />} path="/" />
               <Route element={<h1>Not found!</h1>} />
               <Route element={<Login />} path="/login" />
-              <Route element={<Job />} path="/job" />
+              <Route element={<Job />} path="/job/:id" />
               <Route
                 element={
                   !isMyTokenExpired || googleUser ? (
