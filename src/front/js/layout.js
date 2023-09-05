@@ -33,7 +33,7 @@ const Layout = () => {
   const isMyTokenExpired = isExpired(token);
 
   return (
-    <div>
+    <div id="light">
       <BrowserRouter basename={basename}>
         <ScrollToTop>
           <AuthProvider>

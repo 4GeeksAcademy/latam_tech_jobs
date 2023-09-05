@@ -69,55 +69,55 @@ export const Apply = () => {
             </Modal>
         </div>
 {/*Aqui termina el modal */}
-            <div class="row g-3 justify-content-center mb-5">
-                <div class="col-12">
+            <div className="row g-3 justify-content-center mb-5">
+                <div className="col-12">
                     <p className="text-center fs-4 text">You are applying to the <strong>{store.single_job.job_title}</strong> job at <strong>{store.single_job.company_name}</strong>!</p>
                 </div>
             </div>
-            <div class="row g-3 justify-content-around mb-3">
-                <div class="col-3">
-                    <label for="inputPassword6" class="col-form-label"><i class="fa-solid fa-suitcase"></i> Resume/CV</label>
+            <div className="row g-3 justify-content-around mb-3">
+                <div className="col-3">
+                    <label for="inputPassword6" className="col-form-label"><i className="fa-solid fa-suitcase"></i> Resume/CV</label>
                 </div>
-                <div class="col-6">
-                    <input type="file" class="form-control" aria-label="file example" required/>
-                </div>
-            </div>
-            <div class="row g-3 justify-content-around  mb-3">
-                <div class="col-3">
-                    <label for="nameInput" class="col-form-label"><i class="fa-solid fa-user"></i> Full name</label>
-                </div>
-                <div class="col-6">
-                    <input name="applicant_name" type="text" class="form-control" id="nameInput" placeholder="John Doe" required/>
+                <div className="col-6">
+                    <input type="file" className="form-control" aria-label="file example" required/>
                 </div>
             </div>
-            <div class="row g-3 justify-content-around mb-3">
-                <div class="col-3">
-                    <label for="emailInput" class="col-form-label"><i class="fa-solid fa-envelope"></i> Email</label>
+            <div className="row g-3 justify-content-around  mb-3">
+                <div className="col-3">
+                    <label for="nameInput" className="col-form-label"><i className="fa-solid fa-user"></i> Full name</label>
                 </div>
-                <div class="col-6">
-                    <input name="applicant_email" type="text" class="form-control" id="emailInput" placeholder="name@email.com" required/>
+                <div className="col-6">
+                    <input name="applicant_name" type="text" className="form-control" id="nameInput" placeholder="John Doe" required/>
                 </div>
             </div>
-            <div class="row g-3 justify-content-around mb-3">
-                <div class="col-3">
-                    <label for="phoneInput" class="col-form-label"><i class="fa-solid fa-phone"></i> Phone</label>
+            <div className="row g-3 justify-content-around mb-3">
+                <div className="col-3">
+                    <label for="emailInput" className="col-form-label"><i className="fa-solid fa-envelope"></i> Email</label>
                 </div>
-                <div class="col-6">
-                    <input name="applicant_phone" type="text" class="form-control" id="phoneInput" placeholder="000-000-0000" required/>
+                <div className="col-6">
+                    <input name="applicant_email" type="text" className="form-control" id="emailInput" placeholder="name@email.com" required/>
+                </div>
+            </div>
+            <div className="row g-3 justify-content-around mb-3">
+                <div className="col-3">
+                    <label for="phoneInput" className="col-form-label"><i className="fa-solid fa-phone"></i> Phone</label>
+                </div>
+                <div className="col-6">
+                    <input name="applicant_phone" type="text" className="form-control" id="phoneInput" placeholder="000-000-0000" required/>
                 </div> 
             </div>   
-            <div class="row g-3 justify-content-around mb-3">
-                <div class="col-3">
-                    <label for="companyInput" class="col-form-label"><i class="fa-solid fa-building"></i> Current Company</label>
+            <div className="row g-3 justify-content-around mb-3">
+                <div className="col-3">
+                    <label for="companyInput" className="col-form-label"><i className="fa-solid fa-building"></i> Current Company</label>
                 </div>
-                <div class="col-6">
-                    <input name="applicant_company" type="text" class="form-control" id="companyInput" placeholder="Company name" required/>
+                <div className="col-6">
+                    <input name="applicant_company" type="text" className="form-control" id="companyInput" placeholder="Company name" required/>
                 </div>  
             </div>  
-            <div class="row g-3 justify-content-around mb-3">
-                <div class="col-9">
-                    <label for="exampleFormControlTextarea1" class="form-label"><i class="fa-solid fa-message"></i> Additional Comments</label>
-                    <textarea name="applicant_message" class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
+            <div className="row g-3 justify-content-around mb-3">
+                <div className="col-9">
+                    <label for="exampleFormControlTextarea1" className="form-label"><i className="fa-solid fa-message"></i> Additional Comments</label>
+                    <textarea name="applicant_message" className="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
                 </div>  
             </div>  
             <div class="row g-3 justify-content-around mb-3">

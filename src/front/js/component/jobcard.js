@@ -24,7 +24,7 @@ export const Jobcard = () => {
                         <div className="container">
                             <div className="row">
                                 <span className="col-sm-4">
-                                    <i class="fa-solid fa-building" style={{ color: "red" }}></i>
+                                    <i className="fa-solid fa-building" style={{ color: "red" }}></i>
                                     <p>Company name</p>
                                 </span>
                                 <span className="col-sm-4">
@@ -32,11 +32,11 @@ export const Jobcard = () => {
                                     <p>Location</p>
                                 </span>
                                 <span className="col-sm-4">
-                                    <i class="fa-solid fa-wifi" style={{ color: "blue" }}></i>
+                                    <i className="fa-solid fa-wifi" style={{ color: "blue" }}></i>
                                     <p>Type of job</p>
                                 </span>
                                 <span className="col-sm-4">
-                                    <i class="fa-solid fa-dollar-sign" style={{ color: "#73ff00" }}></i>
+                                    <i className="fa-solid fa-dollar-sign" style={{ color: "#73ff00" }}></i>
                                     <p>Pay</p>
                                 </span>
                             </div>
