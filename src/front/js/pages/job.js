@@ -3,9 +3,11 @@ import { useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
 
 export function Job() {
-  const {store, actions} = useContext(Context)
-  const params = useParams()
-  useEffect(()=>{actions.get_single_job(params.id)},[])
+  const { store, actions } = useContext(Context);
+  const params = useParams();
+  useEffect(() => {
+    actions.get_single_job(params.id);
+  }, []);
   const formData = {
     jobTitle: "Software Developer",
     jobDescription:
@@ -17,7 +19,7 @@ export function Job() {
     questions: [
       "Can you list a few related projects you've worked on in the past?",
       "What makes you stand out against other candidates?",
-      "What is your favorite programming language and why?"
+      "What is your favorite programming language and why?",
     ],
     companyName: "TechCo",
     companyWebsite: "https://www.techco.com",
@@ -26,13 +28,17 @@ export function Job() {
     companyCountry: "USA",
   };
 
+  const questionsArray = Array.isArray(store.single_job.questions)
+    ? store.single_job.questions
+    : [store.single_job.questions];
+
   return (
     <div className="container mt-5">
       <h1 className="h1-title d-flex justify-content-start mb-5">
-        Job Post Preview
+        Job Application Details
       </h1>
 
-      <div className="border border-3 border-info rounded-3 p-4 mb-4">
+      <div className="border border-3 border-success rounded-3 p-4 mb-4">
         <h6>
           <i className="fas fa-file-alt"></i> Job Details
         </h6>
@@ -40,58 +46,61 @@ export function Job() {
           <strong>Job Title:</strong> {store.single_job.job_title}
         </p>
         <p>
-          <strong>Job Description:</strong> {formData.jobDescription}
+          <strong>Job Description:</strong> {store.single_job.job_description}
         </p>
         <p>
-          <strong>Skills Required:</strong> {formData.skills}
+          <strong>Skills Required:</strong> {store.single_job.skills}
         </p>
       </div>
 
       <div className="row">
         <div className="col-md-6">
-          <div className="border border-3 border-info rounded-3 p-4 h-95 mb-4">
+          <div className="border border-3 border-success rounded-3 p-4 h-95 mb-4">
             <h6>
-              <i className="fas fa-money-bill"></i> Job Payment Details
+              <i className="fas fa-money-bill"></i> Job Requirements and Pay
             </h6>
             <p>
-              <strong>Job Type:</strong> {formData.jobType}
+              <strong>Job Type:</strong> {store.single_job.job_type}
             </p>
-            {formData.payRate && (
+            {store.single_job.pay_rate && (
               <p>
-                <strong>Pay Rate ($/hr):</strong> {formData.payRate}
+                <strong>Pay Rate ($/per month):</strong>{" "}
+                {store.single_job.pay_rate}
               </p>
             )}
             <p>
               <strong>Experience Level Required:</strong>{" "}
-              {formData.experienceLevel}
+              {store.single_job.experience_level}
             </p>
           </div>
         </div>
 
         <div className="col-md-6">
-          <div className="border border-3 border-info rounded-3 p-4 h-90 mb-4">
+          <div className="border border-3 border-success rounded-3 p-4 h-90 mb-4">
             <h6>
               <i className="fas fa-building"></i> Company Details
             </h6>
             <p>
-              <strong>Company Name:</strong> {formData.companyName}
+              <strong>Company Name:</strong> {store.single_job.company_name}
             </p>
             <p>
-              <strong>Company Website:</strong> {formData.companyWebsite}
+              <strong>Company Website:</strong>{" "}
+              {store.single_job.company_website}
             </p>
             <p>
-              <strong>Company Location:</strong> {formData.companyCity},{" "}
-              {formData.companyState}, {formData.companyCountry}
+              <strong>Company Location:</strong> {store.single_job.company_city}
+              , {store.single_job.company_state},{" "}
+              {store.single_job.company_country}
             </p>
           </div>
         </div>
       </div>
 
-      <div className="border border-2 border-info rounded-3 p-4 mb-4">
+      <div className="border border-2 border-success rounded-3 p-4 mb-4">
         <h6>
           <i className="fas fa-user"></i> Candidate Questions
         </h6>
-        {formData.questions.map((question, index) => (
+        {questionsArray.map((question, index) => (
           <p key={index}>
             <strong>Question {index + 1}:</strong> {question}
           </p>

@@ -1,14 +1,14 @@
 import React, { useState, useContext } from "react";
 import { Context } from "../store/appContext";
-import 'bootstrap/dist/css/bootstrap.min.css'; 
-import { Button, Modal } from 'react-bootstrap'; 
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Button, Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 export function Post() {
   const [jobTitle, setJobTitle] = useState("");
   const [jobDescription, setJobDescription] = useState("");
   const [skills, setSkills] = useState("");
-  const [jobType, setJobType] = useState("full_time"); // Default value
+  const [jobType, setJobType] = useState("full_time");
   const [payRate, setPayRate] = useState("");
   const [selectedExperience, setSelectedExperience] = useState("");
   const [selectedQuestion, setSelectedQuestion] = useState("");
@@ -21,24 +21,25 @@ export function Post() {
   const [companyCity, setCompanyCity] = useState("");
   const { store, actions } = useContext(Context);
   const [showModal, setShowModal] = useState(false);
-  const [posted, setPosted] = useState(false)
+  const [posted, setPosted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const maxLength = 2000;
 
   const handleOpenModal = () => {
     setShowModal(true);
-    setIsLoading(false)
+    setIsLoading(false);
   };
 
   const handleCloseModal = () => {
     setShowModal(false);
-    if (posted){
-      navigate('/');
+    if (posted) {
+      navigate("/");
       window.location.reload(false);
     } else {
-      navigate('/post')
+      navigate("/post");
     }
-  }
+  };
 
   const handleQuestionChange = (index, value) => {
     const newQuestions = [...questions];
@@ -64,7 +65,7 @@ export function Post() {
   // handle submit
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true)
+    setIsLoading(true);
     const job = {
       job_title: jobTitle,
       job_description: jobDescription,
@@ -80,33 +81,50 @@ export function Post() {
       company_city: companyCity,
     };
     console.log(job);
-    const resp = await actions.submitJob(job)
-    if (resp) {
-      setPosted(true)
-      handleOpenModal()
-    } else {
-      setPosted(false)
-      handleOpenModal()
+    try {
+      const resp = await actions.submitJob(job);
+      if (resp) {
+        setPosted(true);
+        handleOpenModal();
+      } else {
+        setPosted(false);
+        handleOpenModal();
+      }
+    } catch (error) {
+      console.error("Error submitting job:", error);
+    }
+  };
+
+
+  const handleJobDescriptionChange = (e) => {
+    const inputValue = e.target.value;
+    if (inputValue.length <= maxLength) {
+      setJobDescription(inputValue);
     }
   };
 
   return (
     <div className="container mt-5">
-{/*Aqui inicia el modal*/}
+      {/*Aqui inicia el modal*/}
       <div>
-            <Modal show={showModal} onHide={handleCloseModal}>
-                <Modal.Header closeButton>
-                <Modal.Title>{posted ? `Success!` : `Error`}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>{posted ? `Your job was posted successfully!`: `There was a problem posting your job`}.</Modal.Body>
-                <Modal.Footer>
-                <Button variant="secondary" onClick={handleCloseModal}>
-                    Close
-                </Button>
-                </Modal.Footer>
-            </Modal>
-        </div>
-{/*Aqui termina el modal */}
+        <Modal show={showModal} onHide={handleCloseModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>{posted ? `Success!` : `Error`}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {posted
+              ? `Your job was posted successfully!`
+              : `There was a problem posting your job`}
+            .
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseModal}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
+      {/*Aqui termina el modal */}
       <h1 className="h1-title d-flex justify-content-start mb-5">Post a Job</h1>
       {/* TELL US ABOUT YOUR JOB */}
       <h6>TELL US ABOUT YOUR JOB</h6>
@@ -126,23 +144,36 @@ export function Post() {
             onChange={(e) => setJobTitle(e.target.value)}
           />
         </div>
-        <div className="col-md-6">
-          <label htmlFor="jobDescription" className="form-label">
-            Enter the type of work you need done or job title you are hiring for
-          </label>
-          <textarea
-            className="form-control"
-            id="jobDescription"
-            name="jobDescription"
-            required
-            placeholder="Describe your job"
-            value={jobDescription}
-            onChange={(e) => setJobDescription(e.target.value)}
-          ></textarea>
+        <div className="row my-2 d-flex justify-content-start">
+          <div className="col-md-12 ">
+            <label htmlFor="jobDescription" className="form-label">
+              Enter all the information and requirements for your position *
+            </label>
+            <textarea
+              className="form-control"
+              maxLength={2000}
+              id="jobDescription"
+              name="jobDescription"
+              required
+              placeholder="Describe your job"
+              rows="8"
+              value={jobDescription}
+              onChange={(e) => {
+                // Check if the input value exceeds the character limit
+                if (e.target.value.length <= 2000) {
+                  setJobDescription(e.target.value);
+                }
+              }}
+            ></textarea>
+            {/* Character count */}
+            <small className="text-muted">
+              {jobDescription.length}/2000 characters remaining
+            </small>
+          </div>
         </div>
       </form>
       {/* WHAT ARE THE JOB REQUIREMENTS? */}
-      <h6>WHAT ARE THE JOB REQUIREMENTS?</h6>
+      <h6>WHAT ARE THE SKILLS REQUIRED?</h6>
       <form className="row g-3 mb-4">
         <div className="col-md-12">
           <label htmlFor="skills" className="form-label">
@@ -154,7 +185,7 @@ export function Post() {
             id="skills"
             name="skills"
             required
-            placeholder="Enter required skills"
+            placeholder="Enter required skills Ex: React, CSS, JavaScript, Python, Flask etc."
             value={skills}
             onChange={(e) => setSkills(e.target.value)}
           />
@@ -182,7 +213,7 @@ export function Post() {
         </div>
         <div className="col-md-6">
           <label htmlFor="payRate" className="form-label">
-            Pay rate ($/hr) (optional)
+            Pay rate ($/per month) *
           </label>
           <input
             type="number"
@@ -209,7 +240,9 @@ export function Post() {
               Select experience level
             </option>
             <option value="Junior">Junior (1+ years of experience)</option>
-            <option value="Mid-Level">Mid-Level (3+ years of experience)</option>
+            <option value="Mid-Level">
+              Mid-Level (3+ years of experience)
+            </option>
             <option value="Senior">Senior (5+ years of experience)</option>
           </select>
         </div>
@@ -234,7 +267,8 @@ export function Post() {
               Can you list a few related projects you've worked on in the past?
             </option>
             <option value="Can you please share a few links that would allow us to see the quality of your work?">
-              Can you please share a few links that would allow us to see the quality of your work?
+              Can you please share a few links that would allow us to see the
+              quality of your work?
             </option>
             <option value="What makes you stand out against other candidates?">
               What makes you stand out against other candidates?
@@ -292,7 +326,9 @@ export function Post() {
       </form>
       {/* TELL US A LITTLE ABOUT YOUR COMPANY */}
       <div className="mt-5">
-        <h6 className="tell-us-title mt-6">TELL US A LITTLE ABOUT YOUR COMPANY</h6>
+        <h6 className="tell-us-title mt-6">
+          TELL US A LITTLE ABOUT YOUR COMPANY
+        </h6>
       </div>
       <form className="row g-3" onSubmit={handleSubmit}>
         <div className="col-md-6">
@@ -315,7 +351,7 @@ export function Post() {
             Company website *
           </label>
           <input
-            type="url"
+            type="text"
             className="form-control"
             id="companyWebsite"
             name="companyWebsite"
@@ -371,8 +407,16 @@ export function Post() {
           />
         </div>
         <div className="col-md-12 mb-6">
-          <button type="submit" className="btn btn-primary">
-          {isLoading ? (<span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>) : ('Submit')}
+          <button type="submit" className="btn btn-success">
+            {isLoading ? (
+              <span
+                className="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+              ></span>
+            ) : (
+              "Submit"
+            )}
           </button>
         </div>
       </form>
