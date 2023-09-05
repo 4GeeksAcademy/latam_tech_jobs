@@ -87,7 +87,7 @@ def google_login():
         user = User.query.filter_by(email=email).first()
         if user:
             token = create_access_token(identity=email)
-            return jsonify({"message": "logged in successfully", "authorization": token}), 200
+            return jsonify({"message": "logged in successfully", "authorization": token, "user": user.serialize()}), 200
         else:
             return jsonify({"message": "user not registered"}), 401
     except auth.InvalidIdTokenError:
