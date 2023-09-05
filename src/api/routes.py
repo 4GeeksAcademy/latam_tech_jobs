@@ -60,7 +60,7 @@ def login():
         validate = bcrypt.check_password_hash(user.password_hash, pwd_to_check)
     if validate == True:
         token = create_access_token(identity = email)
-        return jsonify({"message": "logged in successfully", "authorization": token}), 200
+        return jsonify({"user": user.serialize(), "authorization": token}), 200
     else:
         return jsonify({"message": "authentication failed"}), 401
     

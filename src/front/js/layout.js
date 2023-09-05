@@ -16,9 +16,9 @@ import { AuthProvider, useAuth } from "./store/authContext";
 import { Unauthenticated } from "./pages/unauthenticated";
 import { Home } from "./pages/home"; 
 
+
 const Layout = () => {
-  const [token, setToken] = useState("");
-  const { store, actions } = useContext(Context);
+  const [token, setToken] = useState();
   const { user: googleUser } = useAuth(); 
   const basename = process.env.BASENAME || "";
 

@@ -6,6 +6,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			isMyTokenExpired: true,
 			jobs: [],
 			single_job: {},
+			user: {},
 			demo: [
 				{
 					title: "FIRST",
@@ -30,6 +31,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			login: async (email, password) => {
+				const store = getStore()
 				try {
 					const resp = await fetch(process.env.BACKEND_URL + "/api/login",{
 						method: "POST",
@@ -44,8 +46,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 					const data = await resp.json()
 					localStorage.setItem("jwt-token", data.authorization);
-	
-					return resp
+					setStore({
+						user: data.user
+					})
+					console.log(store.user)
+					return data
 				} catch (error) {
 					
 				}
