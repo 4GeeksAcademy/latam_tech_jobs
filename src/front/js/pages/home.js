@@ -26,15 +26,21 @@ export const Home = () => {
     return value;
   };
 
-  const clearJobType = () => {
-    const jobTypes = getElementsByName("job_type");
-    jobTypes.forEach((element) => {
-      element.checked = false;
-    });
-  };
-  useEffect(() => {
-    getJobType();
-  }, []);
+
+
+  const clearJobType = ()=>{
+    const jobTypes = document.getElementsByName('job_type')
+      jobTypes.forEach(element => {
+          element.checked = false       
+      });
+  }
+
+  const clearCountry = ()=> {  
+    var dropDown = document.getElementById("countryDrop");  
+    dropDown.selectedIndex = "";  
+} 
+useEffect(()=>{getJobType()},[])
+
 
   const filterClick = async () => {
     const jobType = getJobType();
@@ -113,70 +119,51 @@ export const Home = () => {
     setIsLoading(false);
   };
 
-  const clearFilterClick = async () => {
-    setIsLoading(true);
-    const resp = await actions.get_jobs("");
-    document.getElementById("titleInput").value = "";
-    setMaxSal(0);
-    setMinSal(0);
-    console.log(resp);
-    clearJobType();
-    setIsLoading(false);
-  };
+
+  const clearFilterClick = ()=>{
+    setIsLoading(true)
+    actions.get_jobs("")
+    document.getElementById("titleInput").value = ""
+    setMaxSal(0)
+    setMinSal(0)
+    clearJobType()
+    clearCountry()
+    setIsLoading(false)
+  }
+
 
   useEffect(() => {
     actions.get_jobs("");
   }, []);
   return (
     <div className="container-fluid pb-5 pt-3 bg-body-secondary">
-      <div className="row justify-content-center mb-4 mt-5">
+      <div className="row mb-4 mt-5">
         <div className="col-3"></div>
-        <div className="col-6 d-flex">
-          <input
-            onChange={() => {
-              setTitle(document.getElementById("titleInput").value);
-            }}
-            id="titleInput"
-            type="text"
-            class="form-control"
-            placeholder="Type the job description here...."
-            aria-label="Recipient's username"
-            aria-describedby="button-addon2"
-          />
+        <div className="col-6">
+          <input onChange={()=>{setTitle(document.getElementById("titleInput").value)}} id="titleInput" type="text" class="form-control" placeholder="Type the job description here...." aria-label="Recipient's username" aria-describedby="button-addon2"/>
         </div>
         <div className="col-3"></div>
       </div>
-      <div className="row justify-content-center mb-4">
+      <div className="row mb-4">
+        <div className="col-3"></div>
         <div className="col-6 d-flex justify-content-center">
-          <button
-            type="button"
-            class="btn bg-success"
-            style={{ color: "#ff914d" }}
-          >
-            <strong className="p-5" onClick={filterClick}>
+          <button onClick={filterClick} type="button" class="btn btn-primary" style={{color: "white"}}>
               Search
-            </strong>
           </button>
         </div>
+        <div className="col-3"></div>
       </div>
       <div className="row">
-        <div className="col-3">
-          {/*Filtro izquierdo empieza aqui*/}
-          <div className="row justify-content-center mb-5 mt-5 ">
-            <div className="col-7 d-flex">
-              <select
-                onChange={(e) => {
-                  setCountry(e.target.value);
-                }}
-                className="form-select"
-                aria-label="Default select example"
-              >
-                <option selected>Select a country</option>
-                <option value="Nicaragua">Nicaragua</option>
-                <option value="Guatemala">Guatemala</option>
-                <option value="Colombia">Colombia</option>
-              </select>
-            </div>
+        <div className="col-3 border-end">
+{/*Filtro izquierdo empieza aqui*/ }
+        <div className="row justify-content-center mb-5 mt-5">
+          <div className="col-7 d-flex">
+            <select onChange={(e)=>{setCountry(e.target.value)}} className="form-select" aria-label="Default select example" id="countryDrop">
+              <option value="" selected>Select a country</option>
+              <option value="Nicaragua">Nicaragua</option>
+              <option value="Guatemala">Guatemala</option>
+              <option value="Colombia">Colombia</option>
+            </select>
           </div>
           <div className="row justify-content-center mb-4">
             <div className="col-7 d-flex flex-wrap justify-content-around">
@@ -256,64 +243,64 @@ export const Home = () => {
               />
             </div>
           </div>
-          <div className="row justify-content-between mb-5 mt-5">
-            {" "}
-            {/* Changed justify-content-around to justify-content-between */}
-            <div className="col-6 d-flex flex-wrap justify-content-end">
-              <button
-                type="button"
-                class="btn bg-success"
-                style={{ color: "#ff914d" }}
-                onClick={filterClick}
-              >
-                <strong>Apply</strong>
+
+        </div>
+        <div className="row justify-content-center mb-5 mt-5 ">
+          <div className="col-7 d-flex flex-wrap justify-content-around">
+            <label for="customRange3" class="form-label">Min salary U${minSal}/hr</label>
+            <input value={minSal} type="range" class="form-range" min="0" max="100" step="0.5" id="minSalary" onChange={()=>{setMinSal(document.getElementById("minSalary").value)}}/>
+          </div>
+        </div>
+        <div className="row justify-content-center mb-5 mt-5">
+          <div className="col-7 d-flex flex-wrap justify-content-around">
+            <label for="customRange3" class="form-label">Max salary U${maxSal}/hr</label>
+            <input value={maxSal} type="range" class="form-range" min="0" max="100" step="0.5" id="maxSalary" onChange={()=>{setMaxSal(document.getElementById("maxSalary").value)}}/>
+          </div>
+        </div>
+        <div className="row mb-5 mt-5 d-flex justify-content-center">
+          <div className="col-5 d-flex flex-wrap justify-content-between">
+            <div>
+              <button onClick={filterClick} type="button" class="btn btn-light border">
+                Apply
               </button>
             </div>
-            <div className="col-6 d-flex justify-content-start">
-              {" "}
-              {/* Adjusted the column width */}
-              <button
-                type="button"
-                class="btn bg-success"
-                style={{ color: "#ff914d" }}
-                onClick={clearFilterClick}
-              >
-                <strong>Clear</strong>
+            <div>
+              <button onClick={clearFilterClick} type="button" class="btn btn-light border">
+                Clear
               </button>
-            </div>
+            </div>            
+
           </div>
           {/*Fin del filtro izquierdo*/}
         </div>
 
         <div className="col-6">
           {store.jobs ? (
-            store.jobs.map((job, id) => (
-              <div key={id} className="card text-center mb-3">
-                <div className="card-header">{job.company_name}</div>
-                <div className="card-body">
-                  <h5 className="card-title mb-4">{job.job_title}</h5>
-                  <div className="d-flex justify-content-around">
-                    <p>
-                      <i
-                        class="fa-solid fa-calendar-check fa-xl"
-                        style={{ color: "#ff914d" }}
-                      ></i>{" "}
-                      {job.job_type}
-                    </p>
-                    <p>
-                      <i
-                        class="fa-solid fa-location-dot fa-xl"
-                        style={{ color: "#ff914d" }}
-                      ></i>{" "}
-                      {job.company_country}
-                    </p>
-                    <p>
-                      <i
-                        class="fa-solid fa-money-check-dollar fa-xl"
-                        style={{ color: "#ff914d" }}
-                      ></i>{" "}
-                      USD {job.pay_rate}
-                    </p>
+              store.jobs.map((job, id) => (
+                <div key={id} className="card text-center mb-3">
+                  <div className="card-header">{job.company_name}</div>
+                  <div className="card-body">
+                    <h5 className="card-title mb-4">{job.job_title}</h5>
+                    <div className="d-flex justify-content-around">
+                      <p>
+                        <i class="fa-solid fa-calendar-check fa-xl" style={{color: "#ff914d"}}></i> {job.job_type}
+                      </p>
+                      <p>
+                      <i class="fa-solid fa-location-dot fa-xl" style={{color: "#ff914d"}}></i>{" "}
+                        {job.company_country}
+                      </p>
+                      <p>
+                       <i class="fa-solid fa-money-check-dollar fa-xl" style={{color: "#ff914d"}}></i> USD{" "}
+                        {job.pay_rate}
+                      </p>
+                    </div>
+                    <p className="card-text">{job.job_description.length > 50 ? job.job_description.substring(0, 300) : job.job_description }....</p>
+                    <Link to={`/apply/${job.id}`} class="btn btn-success pt-2 pb-2">
+                      Apply Now
+                    </Link>
+                  </div>
+                  <div className="card-footer text-body-secondary">
+                    <Link to={`/job/${job.id}`}>More information..</Link>
                   </div>
                   <p className="card-text">
                     {job.job_description.length > 50

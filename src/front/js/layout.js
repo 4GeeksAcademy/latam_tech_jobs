@@ -20,6 +20,7 @@ import CreateCV from "./pages/createCV";
 
 const Layout = () => {
   const [token, setToken] = useState();
+  const { store } = useContext(Context)
   const { user: googleUser } = useAuth(); 
   const basename = process.env.BASENAME || "";
 
@@ -47,7 +48,7 @@ const Layout = () => {
               <Route element={<Job />} path="/job/:id" />
               <Route
                 element={
-                  !isMyTokenExpired || googleUser ? (
+                  store.user || googleUser ? (
                     <Post />
                   ) : (
                     <Unauthenticated />

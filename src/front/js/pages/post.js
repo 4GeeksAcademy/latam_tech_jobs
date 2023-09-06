@@ -35,7 +35,6 @@ export function Post() {
     setShowModal(false);
     if (posted) {
       navigate("/");
-      window.location.reload(false);
     } else {
       navigate("/post");
     }
