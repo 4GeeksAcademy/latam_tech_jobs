@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from sqlalchemy.sql import func
 
 db = SQLAlchemy()
 
@@ -18,7 +19,7 @@ class Job(db.Model):
     company_state = db.Column(db.String(100), nullable=False)
     company_city = db.Column(db.String(100), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    creation_date = db.Column(db.DateTime)
+    creation_date = db.Column(db.DateTime, default=datetime.utcnow, server_default=func.now())
 
     def __repr__(self):
         return f'<User {self.job_title}>'
@@ -28,6 +29,7 @@ class Job(db.Model):
             "id": self.id,
             "job_title": self.job_title,
             "job_description": self.job_description,
+            "skills": self.skills,
             "pay_rate": self.pay_rate,
             "experience_level": self.experience_level,
             "questions": self.questions,
