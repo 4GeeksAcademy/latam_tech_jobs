@@ -26,7 +26,7 @@ export const Navbar = () => {
   };
 
   return (
-    <nav className="navbar navbar-expand-md navbar-light bg-white">
+    <nav className="navbar navbar-expand-md navbar-light bg-light border-bottom">
       <div className="container">
         <Link className="navbar-brand" to="/">
           <img
@@ -39,7 +39,7 @@ export const Navbar = () => {
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarNav"
-          className="navbar-toggler"
+          className="navbar-toggler bg-success"
         >
           <span className="navbar-toggler-icon"></span>
         </button>
@@ -73,14 +73,8 @@ export const Navbar = () => {
               </>
             ) : (
               <li className="nav-item">
-                <button className="btn btn-success">
-                <Link
-                      to="/login"
-                      className="text-white"
-                      style={{ textDecoration: "none" }}
-                    >
-                      Login
-                    </Link>                  
+                <button onClick={googleSignIn} className="btn btn-success" style={{color: "#ff914d"}}>
+                  <strong>Login</strong>
                 </button>
               </li>
             )}
