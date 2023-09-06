@@ -112,8 +112,8 @@ export const Navbar = () => {
             ) : (
               <li className="nav-item">
                 <Link to={'/login'}>
-                <button className="btn btn-success" style={{color: "#ff914d"}}>
-                  <strong>Login</strong>
+                <button className="btn btn-primary">
+                  Login
                 </button>
                 </Link>
               </li>

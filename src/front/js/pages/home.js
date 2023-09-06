@@ -26,11 +26,16 @@ export const Home = () => {
   }
 
   const clearJobType = ()=>{
-    const jobTypes = getElementsByName('job_type')
+    const jobTypes = document.getElementsByName('job_type')
       jobTypes.forEach(element => {
           element.checked = false       
       });
   }
+
+  const clearCountry = ()=> {  
+    var dropDown = document.getElementById("countryDrop");  
+    dropDown.selectedIndex = "";  
+} 
 useEffect(()=>{getJobType()},[])
 
   const filterClick = async ()=>{
@@ -73,14 +78,14 @@ useEffect(()=>{getJobType()},[])
     setIsLoading(false)
   }
 
-  const clearFilterClick = async()=>{
+  const clearFilterClick = ()=>{
     setIsLoading(true)
-    const resp = await actions.get_jobs("")
+    actions.get_jobs("")
     document.getElementById("titleInput").value = ""
     setMaxSal(0)
     setMinSal(0)
-    console.log(resp)
     clearJobType()
+    clearCountry()
     setIsLoading(false)
   }
 
@@ -89,27 +94,29 @@ useEffect(()=>{getJobType()},[])
   }, []);
   return (
     <div className="container-fluid pb-5 pt-3 bg-body-secondary">
-      <div className="row justify-content-center mb-4 mt-5">
+      <div className="row mb-4 mt-5">
         <div className="col-3"></div>
-        <div className="col-6 d-flex">
+        <div className="col-6">
           <input onChange={()=>{setTitle(document.getElementById("titleInput").value)}} id="titleInput" type="text" class="form-control" placeholder="Type the job description here...." aria-label="Recipient's username" aria-describedby="button-addon2"/>
         </div>
         <div className="col-3"></div>
       </div>
-      <div className="row justify-content-center mb-4">
+      <div className="row mb-4">
+        <div className="col-3"></div>
         <div className="col-6 d-flex justify-content-center">
-          <button type="button" class="btn bg-success" style={{color: "#ff914d"}}>
-            <strong className="p-5" onClick={filterClick}>Search</strong>
+          <button onClick={filterClick} type="button" class="btn btn-primary" style={{color: "white"}}>
+              Search
           </button>
         </div>
+        <div className="col-3"></div>
       </div>
       <div className="row">
-        <div className="col-3">
+        <div className="col-3 border-end">
 {/*Filtro izquierdo empieza aqui*/ }
-        <div className="row justify-content-center mb-5 mt-5 ">
+        <div className="row justify-content-center mb-5 mt-5">
           <div className="col-7 d-flex">
-            <select onChange={(e)=>{setCountry(e.target.value)}} className="form-select" aria-label="Default select example">
-              <option selected>Select a country</option>
+            <select onChange={(e)=>{setCountry(e.target.value)}} className="form-select" aria-label="Default select example" id="countryDrop">
+              <option value="" selected>Select a country</option>
               <option value="Nicaragua">Nicaragua</option>
               <option value="Guatemala">Guatemala</option>
               <option value="Colombia">Colombia</option>
@@ -150,16 +157,18 @@ useEffect(()=>{getJobType()},[])
             <input value={maxSal} type="range" class="form-range" min="0" max="100" step="0.5" id="maxSalary" onChange={()=>{setMaxSal(document.getElementById("maxSalary").value)}}/>
           </div>
         </div>
-        <div className="row justify-content-around mb-5 mt-5">
-          <div className="col-2 d-flex flex-wrap justify-content-around">
-            <button type="button" class="btn bg-success" style={{color: "#ff914d"}}>
-              <strong className="p-5" onClick={filterClick}>Apply</strong>
-            </button>
-          </div>
-          <div className="col-2 d-flex flex-wrap justify-content-around">
-            <button type="button" class="btn bg-success" style={{color: "#ff914d"}}>
-              <strong className="p-5" onClick={clearFilterClick}>Clear</strong>
-            </button>
+        <div className="row mb-5 mt-5 d-flex justify-content-center">
+          <div className="col-5 d-flex flex-wrap justify-content-between">
+            <div>
+              <button onClick={filterClick} type="button" class="btn btn-light border">
+                Apply
+              </button>
+            </div>
+            <div>
+              <button onClick={clearFilterClick} type="button" class="btn btn-light border">
+                Clear
+              </button>
+            </div>            
           </div>
         </div>
 {/*Fin del filtro izquierdo*/}
@@ -185,8 +194,8 @@ useEffect(()=>{getJobType()},[])
                       </p>
                     </div>
                     <p className="card-text">{job.job_description.length > 50 ? job.job_description.substring(0, 300) : job.job_description }....</p>
-                    <Link to={`/apply/${job.id}`} class="btn bg-success pt-2 pb-2" style={{color: "#ff914d"}}>
-                      <strong>Apply Now</strong>
+                    <Link to={`/apply/${job.id}`} class="btn btn-success pt-2 pb-2">
+                      Apply Now
                     </Link>
                   </div>
                   <div className="card-footer text-body-secondary">
@@ -211,7 +220,9 @@ useEffect(()=>{getJobType()},[])
           </div>          
           ) : <></>}
         </div>
-        <div className="col-3"></div>
+        <div className="col-3 border-start">
+          <div></div>
+        </div>
       </div>
     </div>
   );
