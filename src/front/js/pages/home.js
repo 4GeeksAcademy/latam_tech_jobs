@@ -7,7 +7,9 @@ export const Home = () => {
   const { store, actions } = useContext(Context);
   const [minSal, setMinSal] = useState(0)
   const [maxSal, setMaxSal] = useState(0)
+  const [country, setCountry] = useState()
   const [type, setType] = useState(null)
+  const [title, setTitle] = useState()
 
   const getJobType = ()=>{
     setType(document.getElementsByName('job_type'))
@@ -21,20 +23,38 @@ export const Home = () => {
     }
     return value
   }
-
 useEffect(()=>{getJobType()},[])
 
   const filterClick = async ()=>{
     const jobType = getJobType()
-    if (jobType){
-     const data = await actions.get_jobs('?type=' + jobType)
-     if(resp){
+
+     if(jobType && minSal > 0 && maxSal > 0 && country && title){
+      const data = await actions.get_jobs('?type=' + jobType + '&min=' + minSal + '&max=' + maxSal + '&country=' + country + '&title=' + title)
       console.log(data)
-     } else {
-      console.log('error en la llamada al api get_jobs')
-     }
+    } else if (jobType && minSal > 0 && maxSal > 0 && title){
+      const data = await actions.get_jobs('?type=' + jobType + '&min=' + minSal + '&max=' + maxSal + '&title=' + title)
+      console.log(data)
+    } else if (minSal > 0 && maxSal > 0 && title){
+      const data = await actions.get_jobs('?min=' + minSal + '&max=' + maxSal + '&title=' + title)
+      console.log(data)
+     } else if (minSal > 0 && maxSal > 0){
+        const data = await actions.get_jobs('?min=' + minSal + '&max=' + maxSal)
+        console.log(data)
+    }else if (jobType){
+     const data = await actions.get_jobs('?type=' + jobType)
+     console.log(data)
+    } else if(country){
+      const data = await actions.get_jobs('?country=' + country)
+      console.log(data)
+    } if(title){
+      const data = await actions.get_jobs('?title=' + title)
+      console.log(data)
     }
-    
+  }
+
+  const clearFilterClick = async()=>{
+    const resp = await actions.get_jobs("")
+    console.log(resp)
   }
 
   useEffect(() => {
@@ -45,20 +65,14 @@ useEffect(()=>{getJobType()},[])
       <div className="row justify-content-center mb-4 mt-5">
         <div className="col-3"></div>
         <div className="col-6 d-flex">
-          <input
-            class="form-control"
-            type="text"
-            value="Type job title here..."
-            aria-label="readonly input example"
-            readonly
-          />
+          <input onChange={()=>{setTitle(document.getElementById("titleInput").value)}} id="titleInput" type="text" class="form-control" placeholder="Type the job description here...." aria-label="Recipient's username" aria-describedby="button-addon2"/>
         </div>
         <div className="col-3"></div>
       </div>
       <div className="row justify-content-center mb-4">
         <div className="col-6 d-flex justify-content-center">
           <button type="button" class="btn bg-success" style={{color: "#ff914d"}}>
-            <strong className="p-5">Search</strong>
+            <strong className="p-5" onClick={filterClick}>Search</strong>
           </button>
         </div>
       </div>
@@ -67,11 +81,11 @@ useEffect(()=>{getJobType()},[])
 {/*Filtro izquierdo empieza aqui*/ }
         <div className="row justify-content-center mb-5 mt-5 ">
           <div className="col-7 d-flex">
-            <select className="form-select" aria-label="Default select example">
+            <select onChange={(e)=>{setCountry(e.target.value)}} className="form-select" aria-label="Default select example">
               <option selected>Select a country</option>
-              <option value="1">Nicaragua</option>
-              <option value="2">Guatemala</option>
-              <option value="3">Colombia</option>
+              <option value="Nicaragua">Nicaragua</option>
+              <option value="Guatemala">Guatemala</option>
+              <option value="Colombia">Colombia</option>
             </select>
           </div>
         </div>
@@ -109,10 +123,15 @@ useEffect(()=>{getJobType()},[])
             <input type="range" class="form-range" min="0" max="100" step="0.5" id="maxSalary" onChange={()=>{setMaxSal(document.getElementById("maxSalary").value)}}/>
           </div>
         </div>
-        <div className="row justify-content-center mb-5 mt-5">
-          <div className="col-3 d-flex flex-wrap justify-content-around">
+        <div className="row justify-content-around mb-5 mt-5">
+          <div className="col-2 d-flex flex-wrap justify-content-around">
             <button type="button" class="btn bg-success" style={{color: "#ff914d"}}>
               <strong className="p-5" onClick={filterClick}>Apply</strong>
+            </button>
+          </div>
+          <div className="col-2 d-flex flex-wrap justify-content-around">
+            <button type="button" class="btn bg-success" style={{color: "#ff914d"}}>
+              <strong className="p-5" onClick={clearFilterClick}>Clear</strong>
             </button>
           </div>
         </div>
@@ -137,7 +156,7 @@ useEffect(()=>{getJobType()},[])
                     {job.pay_rate}
                   </p>
                 </div>
-                <p className="card-text">{job.job_description}</p>
+                <p className="card-text">{job.job_description.length > 50 ? job.job_description.substring(0, 300) : job.job_description }....</p>
                 <Link to={`/apply/${job.id}`} class="btn bg-success pt-2 pb-2" style={{color: "#ff914d"}}>
                   <strong>Apply Now</strong>
                 </Link>

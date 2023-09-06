@@ -127,31 +127,39 @@ def submitjob():
 def get_jobs():
     min = request.args.get("min")
     max = request.args.get("max")
-    company = request.args.get("company")
+    country = request.args.get("country")
     type = request.args.get("type")
     id = request.args.get("id")
-
+    title = request.args.get("title")
+    if title:
+        Jobs = db.session.query(Job).filter(Job.job_title.contains(title))
+        json = [job.serialize() for job in Jobs]
+        return json, 200
     if id:
         job = Job.query.filter_by(id = id).first()
         return jsonify(job.serialize()), 200
-    if min and max and company and type:
-        Jobs = db.session.query(Job).filter(Job.pay_rate >= min, Job.pay_rate <= max, Job.company_name == company, Job.job_type == type)
+    if min and max and country and type:
+        Jobs = db.session.query(Job).filter(Job.pay_rate >= min, Job.pay_rate <= max, Job.company_country == country, Job.job_type == type)
         json = [job.serialize() for job in Jobs]
         return json, 200
-    if min and max and company:
-        Jobs = db.session.query(Job).filter(Job.pay_rate >= min, Job.pay_rate <= max, Job.company_name == company)
+    if min and max and country:
+        Jobs = db.session.query(Job).filter(Job.pay_rate >= min, Job.pay_rate <= max, Job.company_country == country)
+        json = [job.serialize() for job in Jobs]
+        return json, 200
+    if min and max and type:
+        Jobs = db.session.query(Job).filter(Job.pay_rate >= min, Job.pay_rate <= max, Job.job_type == type)
         json = [job.serialize() for job in Jobs]
         return json, 200
     if min and max:
         Jobs = db.session.query(Job).filter(Job.pay_rate >= min, Job.pay_rate <= max)
         json = [job.serialize() for job in Jobs]
         return json, 200
-    if company and type:
-        Jobs = db.session.query(Job).filter(Job.company_name == company, Job.job_type == type)
+    if country and type:
+        Jobs = db.session.query(Job).filter(Job.company_country == country, Job.job_type == type)
         json = [job.serialize() for job in Jobs]
         return json, 200 
-    if company:
-        Jobs = db.session.query(Job).filter(Job.company_name == company)
+    if country:
+        Jobs = db.session.query(Job).filter(Job.company_country == country)
         json = [job.serialize() for job in Jobs]
         return json, 200 
     if type:
