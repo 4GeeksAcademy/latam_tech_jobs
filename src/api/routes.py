@@ -131,41 +131,62 @@ def get_jobs():
     type = request.args.get("type")
     id = request.args.get("id")
     title = request.args.get("title")
-    if title:
-        Jobs = db.session.query(Job).filter(Job.job_title.contains(title))
-        json = [job.serialize() for job in Jobs]
-        return json, 200
+
     if id:
         job = Job.query.filter_by(id = id).first()
         return jsonify(job.serialize()), 200
-    if min and max and country and type:
+    elif min and max and country and type and title:
+        Jobs = db.session.query(Job).filter(Job.pay_rate >= min, Job.pay_rate <= max, Job.company_country == country, Job.job_type == type, Job.job_title.contains(title))
+        json = [job.serialize() for job in Jobs]
+        return json, 200
+    elif min and max and country and title:
+        Jobs = db.session.query(Job).filter(Job.pay_rate >= min, Job.pay_rate <= max, Job.company_country == country, Job.job_title.contains(title))
+        json = [job.serialize() for job in Jobs]
+        return json, 200
+    elif min and max and country and type:
         Jobs = db.session.query(Job).filter(Job.pay_rate >= min, Job.pay_rate <= max, Job.company_country == country, Job.job_type == type)
         json = [job.serialize() for job in Jobs]
         return json, 200
-    if min and max and country:
+    elif min and max and country:
         Jobs = db.session.query(Job).filter(Job.pay_rate >= min, Job.pay_rate <= max, Job.company_country == country)
         json = [job.serialize() for job in Jobs]
         return json, 200
-    if min and max and type:
+    elif min and max and type:
         Jobs = db.session.query(Job).filter(Job.pay_rate >= min, Job.pay_rate <= max, Job.job_type == type)
         json = [job.serialize() for job in Jobs]
         return json, 200
-    if min and max:
+    elif min and max and title:
+        Jobs = db.session.query(Job).filter(Job.pay_rate >= min, Job.pay_rate <= max, Job.job_title.contains(title))
+        json = [job.serialize() for job in Jobs]
+        return json, 200 
+    elif min and max:
         Jobs = db.session.query(Job).filter(Job.pay_rate >= min, Job.pay_rate <= max)
         json = [job.serialize() for job in Jobs]
         return json, 200
-    if country and type:
+    elif country and type:
         Jobs = db.session.query(Job).filter(Job.company_country == country, Job.job_type == type)
         json = [job.serialize() for job in Jobs]
         return json, 200 
-    if country:
+    elif country and title:
+        Jobs = db.session.query(Job).filter(Job.company_country == country, Job.job_title.contains(title))
+        json = [job.serialize() for job in Jobs]
+        return json, 200 
+    elif type and title:
+        Jobs = db.session.query(Job).filter(Job.job_type == type, Job.job_title.contains(title))
+        json = [job.serialize() for job in Jobs]
+        return json, 200 
+    elif country:
         Jobs = db.session.query(Job).filter(Job.company_country == country)
         json = [job.serialize() for job in Jobs]
         return json, 200 
-    if type:
+    elif type:
         Jobs = db.session.query(Job).filter(Job.job_type == type)
         json = [job.serialize() for job in Jobs]
-        return json, 200         
+        return json, 200   
+    elif title:
+        Jobs = db.session.query(Job).filter(Job.job_title.contains(title))
+        json = [job.serialize() for job in Jobs]
+        return json, 200        
     else:
         Jobs = Job.query.all()
         json = [job.serialize() for job in Jobs]

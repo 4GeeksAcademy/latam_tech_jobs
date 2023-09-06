@@ -10,6 +10,7 @@ export const Home = () => {
   const [country, setCountry] = useState()
   const [type, setType] = useState(null)
   const [title, setTitle] = useState()
+  const [isLoading, setIsLoading] = useState(false)
 
   const getJobType = ()=>{
     setType(document.getElementsByName('job_type'))
@@ -23,38 +24,64 @@ export const Home = () => {
     }
     return value
   }
+
+  const clearJobType = ()=>{
+    const jobTypes = getElementsByName('job_type')
+      jobTypes.forEach(element => {
+          element.checked = false       
+      });
+  }
 useEffect(()=>{getJobType()},[])
 
   const filterClick = async ()=>{
     const jobType = getJobType()
-
+    setIsLoading(true)
      if(jobType && minSal > 0 && maxSal > 0 && country && title){
       const data = await actions.get_jobs('?type=' + jobType + '&min=' + minSal + '&max=' + maxSal + '&country=' + country + '&title=' + title)
       console.log(data)
     } else if (jobType && minSal > 0 && maxSal > 0 && title){
       const data = await actions.get_jobs('?type=' + jobType + '&min=' + minSal + '&max=' + maxSal + '&title=' + title)
       console.log(data)
-    } else if (minSal > 0 && maxSal > 0 && title){
+    } else if (minSal > 0 && maxSal > 0 && jobType && country){
+      const data = await actions.get_jobs('?min=' + minSal + '&max=' + maxSal + '&type=' + jobType + "&country=" + country)
+      console.log(data)       
+     } else if (minSal > 0 && maxSal > 0 && title){
       const data = await actions.get_jobs('?min=' + minSal + '&max=' + maxSal + '&title=' + title)
       console.log(data)
+     } else if (minSal > 0 && maxSal > 0 && jobType){
+      const data = await actions.get_jobs('?min=' + minSal + '&max=' + maxSal + '&type=' + jobType)
+      console.log(data) 
      } else if (minSal > 0 && maxSal > 0){
         const data = await actions.get_jobs('?min=' + minSal + '&max=' + maxSal)
         console.log(data)
-    }else if (jobType){
+    } else if (jobType && title){
+      const data = await actions.get_jobs('?type=' + jobType + '&title=' + title)
+      console.log(data)
+    } else if (country && title){
+      const data = await actions.get_jobs('?country=' + country + '&title=' + title)
+      console.log(data)
+    } else if (jobType){
      const data = await actions.get_jobs('?type=' + jobType)
      console.log(data)
     } else if(country){
       const data = await actions.get_jobs('?country=' + country)
       console.log(data)
-    } if(title){
+    } else if(title){
       const data = await actions.get_jobs('?title=' + title)
       console.log(data)
     }
+    setIsLoading(false)
   }
 
   const clearFilterClick = async()=>{
+    setIsLoading(true)
     const resp = await actions.get_jobs("")
+    document.getElementById("titleInput").value = ""
+    setMaxSal(0)
+    setMinSal(0)
     console.log(resp)
+    clearJobType()
+    setIsLoading(false)
   }
 
   useEffect(() => {
@@ -114,13 +141,13 @@ useEffect(()=>{getJobType()},[])
         <div className="row justify-content-center mb-5 mt-5 ">
           <div className="col-7 d-flex flex-wrap justify-content-around">
             <label for="customRange3" class="form-label">Min salary U${minSal}/hr</label>
-            <input type="range" class="form-range" min="0" max="100" step="0.5" id="minSalary" onChange={()=>{setMinSal(document.getElementById("minSalary").value)}}/>
+            <input value={minSal} type="range" class="form-range" min="0" max="100" step="0.5" id="minSalary" onChange={()=>{setMinSal(document.getElementById("minSalary").value)}}/>
           </div>
         </div>
         <div className="row justify-content-center mb-5 mt-5">
           <div className="col-7 d-flex flex-wrap justify-content-around">
             <label for="customRange3" class="form-label">Max salary U${maxSal}/hr</label>
-            <input type="range" class="form-range" min="0" max="100" step="0.5" id="maxSalary" onChange={()=>{setMaxSal(document.getElementById("maxSalary").value)}}/>
+            <input value={maxSal} type="range" class="form-range" min="0" max="100" step="0.5" id="maxSalary" onChange={()=>{setMaxSal(document.getElementById("maxSalary").value)}}/>
           </div>
         </div>
         <div className="row justify-content-around mb-5 mt-5">
@@ -138,34 +165,51 @@ useEffect(()=>{getJobType()},[])
 {/*Fin del filtro izquierdo*/}
         </div>
         <div className="col-6">
-          {store.jobs.map((job, id) => (
-            <div key={id} className="card text-center mb-3">
-              <div className="card-header">{job.company_name}</div>
-              <div className="card-body">
-                <h5 className="card-title mb-4">{job.job_title}</h5>
-                <div className="d-flex justify-content-around">
-                  <p>
-                    <i class="fa-solid fa-calendar-check fa-xl" style={{color: "#ff914d"}}></i> {job.job_type}
-                  </p>
-                  <p>
-                  <i class="fa-solid fa-location-dot fa-xl" style={{color: "#ff914d"}}></i>{" "}
-                    {job.company_country}
-                  </p>
-                  <p>
-                   <i class="fa-solid fa-money-check-dollar fa-xl" style={{color: "#ff914d"}}></i> USD{" "}
-                    {job.pay_rate}
-                  </p>
+          {store.jobs ? (
+              store.jobs.map((job, id) => (
+                <div key={id} className="card text-center mb-3">
+                  <div className="card-header">{job.company_name}</div>
+                  <div className="card-body">
+                    <h5 className="card-title mb-4">{job.job_title}</h5>
+                    <div className="d-flex justify-content-around">
+                      <p>
+                        <i class="fa-solid fa-calendar-check fa-xl" style={{color: "#ff914d"}}></i> {job.job_type}
+                      </p>
+                      <p>
+                      <i class="fa-solid fa-location-dot fa-xl" style={{color: "#ff914d"}}></i>{" "}
+                        {job.company_country}
+                      </p>
+                      <p>
+                       <i class="fa-solid fa-money-check-dollar fa-xl" style={{color: "#ff914d"}}></i> USD{" "}
+                        {job.pay_rate}
+                      </p>
+                    </div>
+                    <p className="card-text">{job.job_description.length > 50 ? job.job_description.substring(0, 300) : job.job_description }....</p>
+                    <Link to={`/apply/${job.id}`} class="btn bg-success pt-2 pb-2" style={{color: "#ff914d"}}>
+                      <strong>Apply Now</strong>
+                    </Link>
+                  </div>
+                  <div className="card-footer text-body-secondary">
+                    <Link to={`/job/${job.id}`}>More information..</Link>
+                  </div>
                 </div>
-                <p className="card-text">{job.job_description.length > 50 ? job.job_description.substring(0, 300) : job.job_description }....</p>
-                <Link to={`/apply/${job.id}`} class="btn bg-success pt-2 pb-2" style={{color: "#ff914d"}}>
-                  <strong>Apply Now</strong>
-                </Link>
-              </div>
-              <div className="card-footer text-body-secondary">
-                <Link to={`/job/${job.id}`}>More information..</Link>
-              </div>
+              ))
+            ) : <h3>No matches found</h3>   
+            
+          }
+           {isLoading ? (
+          <div className="d-flex justify-content-center">
+             <div class="spinner-grow text-success" role="status">
+              <span class="visually-hidden">Loading...</span>          
             </div>
-          ))}
+            <div class="spinner-grow text-success" role="status">
+              <span class="visually-hidden">Loading...</span>          
+            </div>
+            <div class="spinner-grow text-success" role="status">
+              <span class="visually-hidden">Loading...</span>          
+            </div>
+          </div>          
+          ) : <></>}
         </div>
         <div className="col-3"></div>
       </div>

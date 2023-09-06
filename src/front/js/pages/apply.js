@@ -76,7 +76,7 @@ export const Apply = () => {
             </div>
             <div className="row g-3 justify-content-around mb-3">
                 <div className="col-3">
-                    <label for="inputPassword6" className="col-form-label"><i className="fa-solid fa-suitcase"></i> Resume/CV</label>
+                    <label for="inputPassword6" className="col-form-label"><i className="fa-solid fa-suitcase fa-xl" style={{color: "#ff914d"}}></i> Resume/CV</label>
                 </div>
                 <div className="col-6">
                     <input type="file" className="form-control" aria-label="file example" required/>
@@ -84,7 +84,7 @@ export const Apply = () => {
             </div>
             <div className="row g-3 justify-content-around  mb-3">
                 <div className="col-3">
-                    <label for="nameInput" className="col-form-label"><i className="fa-solid fa-user"></i> Full name</label>
+                    <label for="nameInput" className="col-form-label"><i className="fa-solid fa-user fa-xl" style={{color: "#ff914d"}}></i> Full name</label>
                 </div>
                 <div className="col-6">
                     <input name="applicant_name" type="text" className="form-control" id="nameInput" placeholder="John Doe" required/>
@@ -92,7 +92,7 @@ export const Apply = () => {
             </div>
             <div className="row g-3 justify-content-around mb-3">
                 <div className="col-3">
-                    <label for="emailInput" className="col-form-label"><i className="fa-solid fa-envelope"></i> Email</label>
+                    <label for="emailInput" className="col-form-label"><i className="fa-solid fa-envelope fa-xl" style={{color: "#ff914d"}}></i> Email</label>
                 </div>
                 <div className="col-6">
                     <input name="applicant_email" type="text" className="form-control" id="emailInput" placeholder="name@email.com" required/>
@@ -100,7 +100,7 @@ export const Apply = () => {
             </div>
             <div className="row g-3 justify-content-around mb-3">
                 <div className="col-3">
-                    <label for="phoneInput" className="col-form-label"><i className="fa-solid fa-phone"></i> Phone</label>
+                    <label for="phoneInput" className="col-form-label"><i className="fa-solid fa-phone fa-xl" style={{color: "#ff914d"}}></i> Phone</label>
                 </div>
                 <div className="col-6">
                     <input name="applicant_phone" type="text" className="form-control" id="phoneInput" placeholder="000-000-0000" required/>
@@ -108,7 +108,7 @@ export const Apply = () => {
             </div>   
             <div className="row g-3 justify-content-around mb-3">
                 <div className="col-3">
-                    <label for="companyInput" className="col-form-label"><i className="fa-solid fa-building"></i> Current Company</label>
+                    <label for="companyInput" className="col-form-label"><i className="fa-solid fa-building fa-xl" style={{color: "#ff914d"}}></i> Current Company</label>
                 </div>
                 <div className="col-6">
                     <input name="applicant_company" type="text" className="form-control" id="companyInput" placeholder="Company name" required/>
@@ -116,14 +116,16 @@ export const Apply = () => {
             </div>  
             <div className="row g-3 justify-content-around mb-3">
                 <div className="col-9">
-                    <label for="exampleFormControlTextarea1" className="form-label"><i className="fa-solid fa-message"></i> Additional Comments</label>
+                    <label for="exampleFormControlTextarea1" className="form-label"><i className="fa-solid fa-message fa-xl" style={{color: "#ff914d"}}></i> Additional Comments</label>
                     <textarea name="applicant_message" className="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
                 </div>  
             </div>  
             <div class="row g-3 justify-content-around mb-3">
                 <div class="d-flex justify-content-center">
-                    <button type="submit" class="btn btn-primary">
-                    {isLoading ? (<span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>) : ('Submit')}
+                    <button type="submit" class="btn bg-success pt-2 pb-2" style={{color: "#ff914d"}}>
+                        <strong>
+                            {isLoading ? (<span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>) : ('Submit')}
+                        </strong>
                     </button>
                 </div>  
             </div>  

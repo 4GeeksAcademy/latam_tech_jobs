@@ -24,7 +24,6 @@ export function Login() {
       setShowModal(false);
       if (login){
         navigate('/');
-        window.location.reload(false);
       } else {
         navigate('/login')
       }
