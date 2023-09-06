@@ -6,7 +6,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			isMyTokenExpired: true,
 			jobs: [],
 			single_job: {},
-			user: {},
+			user: null,
 			demo: [
 				{
 					title: "FIRST",
@@ -27,7 +27,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			logout: ()=>{
-				localStorage.removeItem('jwt-token')
+				try {
+					localStorage.removeItem('jwt-token')
+					setStore({
+						user: null
+					})
+				} catch (error) {
+					console.log(error)
+				}
 			},
 
 			login: async (email, password) => {
