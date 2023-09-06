@@ -15,6 +15,7 @@ import { Apply } from "./pages/apply";
 import { AuthProvider, useAuth } from "./store/authContext";
 import { Unauthenticated } from "./pages/unauthenticated";
 import { Home } from "./pages/home"; 
+import CreateCV from "./pages/createCV";
 
 
 const Layout = () => {
@@ -42,6 +43,7 @@ const Layout = () => {
             <Routes >
               <Route element={<Home />} path="/" />
               <Route element={<h1>Not found!</h1>} />
+              <Route element={<CreateCV />} path="/createcv" />
               <Route element={<Login />} path="/login" />
               <Route element={<Job />} path="/job/:id" />
               <Route

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import logoFooter from "../../img/logo-latamtj.png";
+import logoFooter from "../../img/newlogo-footer.png";
 import "../css/footer.css";
 
 export const Footer = () => (
@@ -17,9 +17,10 @@ export const Footer = () => (
             />
           </h5>
           <p>
-            Tech-Jobs Latin America is a remote job board for tech professionals in the
-            region. We want to assist companies in finding the best talent and
-            professionals in finding the best job opportunities in the region.
+            Tech-Jobs Latin America is a remote job board for tech professionals
+            in the region. We want to assist companies in finding the best
+            talent and professionals in finding the best job opportunities in
+            the region.
           </p>
         </div>
         <div className="col-md-2 mt-4">
@@ -56,8 +57,8 @@ export const Footer = () => (
               </Link>
             </li>
             <li>
-              <Link to="/job-seekers" className="text-black">
-                Post Resume
+              <Link to="/createcv" className="text-black">
+                Create Resume
               </Link>
             </li>
             <li>

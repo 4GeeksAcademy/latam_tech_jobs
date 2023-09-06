@@ -4,7 +4,7 @@ import { Context } from "../store/appContext";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../store/authContext";
 import { GoogleButton } from "react-google-button";
-import logoNavbar from "../../img/logo-latamtj2.png";
+import logoNavbar from "../../img/newlogo-nav.png";
 import "../css/navbar.css";
 import 'bootstrap/dist/css/bootstrap.min.css'; 
 import { Button, Modal } from 'react-bootstrap'; 
