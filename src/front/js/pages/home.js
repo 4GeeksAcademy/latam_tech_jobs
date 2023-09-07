@@ -35,7 +35,8 @@ export const Home = () => {
 
   const clearCountry = () => {
     var dropDown = document.getElementById("countryDrop");
-    dropDown.selectedIndex = "";
+    dropDown.selectedIndex = 0;
+    setCountry(null)
   };
 
   useEffect(() => {
@@ -93,6 +94,11 @@ export const Home = () => {
         "?min=" + minSal + "&max=" + maxSal + "&type=" + jobType
       );
       console.log(data);
+    } else if (minSal > 0 && maxSal > 0 && country) {
+      const data = await actions.get_jobs(
+        "?min=" + minSal + "&max=" + maxSal + "&country=" + country
+      );
+      console.log(data);
     } else if (minSal > 0 && maxSal > 0) {
       const data = await actions.get_jobs("?min=" + minSal + "&max=" + maxSal);
       console.log(data);
@@ -122,9 +128,12 @@ export const Home = () => {
   const clearFilterClick = () => {
     setIsLoading(true);
     actions.get_jobs("");
-    document.getElementById("titleInput").value = "";
+    document.getElementById("titleInput").value = null;
     setMaxSal(0);
     setMinSal(0);
+    setCountry(null)
+    setTitle(null)
+    setType(null)
     clearJobType();
     clearCountry();
     setIsLoading(false);
@@ -180,12 +189,13 @@ export const Home = () => {
                 aria-label="Default select example"
                 id="countryDrop"
               >
-                <option value="" selected>
+                <option selected>
                   Select a country
                 </option>
                 <option value="Nicaragua">Nicaragua</option>
                 <option value="Guatemala">Guatemala</option>
                 <option value="Colombia">Colombia</option>
+                <option value="El Salvador">El Salvador</option>
               </select>
             </div>
             <div className="row justify-content-center mb-4">
@@ -268,7 +278,7 @@ export const Home = () => {
             </div>
           </div>
           <div className="row mb-5 mt-5 d-flex justify-content-center">
-            <div className="col-5 d-flex flex-wrap justify-content-between">
+            <div className="col-6 d-flex flex-wrap justify-content-around">
               <div>
                 <button
                   onClick={filterClick}

@@ -106,6 +106,29 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 
 			},
+			google_sigin: async(token) => {
+				const store = getStore()
+				try {
+					const response = await fetch("/api/google_login", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({ token: token }),
+					});
+					if(response.ok){
+						const data = await response.json()
+						localStorage.setItem("jwt-token", data.authorization);
+						setStore({
+							user: data.user
+						})
+						console.log(store.user)
+						return data
+					}
+				} catch (error) {
+					console.log(error)
+				}
+			},
 
 			get_single_job: async(id)=>{
 				const store = getStore()
