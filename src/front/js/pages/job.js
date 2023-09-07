@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
+import { Link } from "react-router-dom";
 
 export function Job() {
   const { store, actions } = useContext(Context);
@@ -108,9 +109,12 @@ export function Job() {
       </div>
 
       <div className="apply-button-container">
-        <a href="#" className="btn btn-primary apply-button">
+        <Link
+          to={"/apply/" + params.id}
+          className="btn btn-primary apply-button"
+        >
           Apply to this job
-        </a>
+        </Link>
       </div>
     </div>
   );
