@@ -33,18 +33,20 @@ export function Login() {
     const handleGoogleSignIn = async () => {
         try {
             const googleUser = await googleSignIn();
-            if (googleUser.idToken) {
+    
+            // Check if the user is signed in
+            if (googleUser && googleUser.idToken) {
                 const response = await fetch("/api/google_login", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({ token: googleUser.idToken }),
+                    body: JSON.stringify({ token: googleUser}),
                 });
                 const data = await response.json();
                 if (response.ok) {
                     localStorage.setItem("jwt-token", data.authorization);
-                    actions.loginUser(); // Update your user context
+                    actions.loginUser();
                     navigate("/");
                 } else {
                     console.log(data.message);

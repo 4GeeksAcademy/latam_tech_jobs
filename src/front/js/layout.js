@@ -34,6 +34,12 @@ const Layout = () => {
 
   const isMyTokenExpired = isExpired(token);
 
+  useEffect(() => {
+    setToken(localStorage.getItem("jwt-token"));
+    console.log("store.user:", store.user);
+    console.log("googleUser:", googleUser);
+  }, []);
+
   return (
     <div id="light">
       <BrowserRouter basename={basename}>
@@ -48,7 +54,7 @@ const Layout = () => {
               <Route element={<Job />} path="/job/:id" />
               <Route
                 element={
-                  store.user || googleUser ? (
+                  (store.user || googleUser) ? (
                     <Post />
                   ) : (
                     <Unauthenticated />

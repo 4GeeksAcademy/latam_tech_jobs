@@ -8,6 +8,7 @@ import logoNavbar from "../../img/newlogo-nav.png";
 import "../css/navbar.css";
 import 'bootstrap/dist/css/bootstrap.min.css'; 
 import { Button, Modal } from 'react-bootstrap'; 
+import { useEffect } from "react";
 
 export const Navbar = () => {
   const { user, googleSignIn, googleSignOut } = useAuth();
@@ -18,53 +19,54 @@ export const Navbar = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isLogout, setIsLogout] = useState(false);
 
+
+  useEffect(() => {
+
+    if (user) {
+      navigate("/");
+    }
+  }, [user, navigate]);
+
   const handleOpenModal = () => {
     setShowModal(true);
-    setIsLoading(false)
+    setIsLoading(false);
   };
 
   const handleCloseModal = () => {
     setShowModal(false);
-    navigate('/')
+    navigate('/');
   }
 
-
-  const handleLogoutClick = async (e) => {
+  const handleLogout = async (e) => {
     e.preventDefault();
+    setIsLogout(true);
+    handleOpenModal();
 
     if (user) {
       await googleSignOut();
+    } else {
+      actions.logout();
+      navigate("/");
     }
-
-    actions.logout();
-    alert("You were logged out successfully");
-    navigate("/");
   };
-
-  const handleLogout = (e)=>{
-      e.preventDefault()
-      actions.logout()
-      setIsLogout(true)
-      handleOpenModal()
-  }
 
   return (
     <nav className="navbar navbar-expand-md navbar-light bg-light border-bottom">
       {/*Aqui inicia el modal*/}
       <div>
-            <Modal show={showModal} onHide={handleCloseModal}>
-                <Modal.Header closeButton>
-                <Modal.Title>{isLogout ? `Success!` : `Error`}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>{isLogout ? (<p>You have successfully loged out</p>): `There was a problem with your appliacation, try again`}.</Modal.Body>
-                <Modal.Footer>
-                <Button variant="secondary" onClick={handleCloseModal}>
-                    Close
-                </Button>
-                </Modal.Footer>
-            </Modal>
-        </div>
-{/*Aqui termina el modal */}
+        <Modal show={showModal} onHide={handleCloseModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>{isLogout ? `Success!` : `Error`}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>{isLogout ? (<p>You have successfully logged out</p>) : `There was a problem with your application, try again`}.</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseModal}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
+      {/*Aqui termina el modal */}
       <div className="container">
         <Link className="navbar-brand" to="/">
           <img
@@ -84,10 +86,10 @@ export const Navbar = () => {
 
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ms-auto">
-            {store.user ? (
+            {user || store.user ? (
               <>
                 <li className="nav-item">
-                  <span className="nav-link">Hello, {store.user.user_name}</span>
+                  <span className="nav-link">Hello, {user ? user.displayName : store.user.user_name}</span>
                 </li>
                 <li className="nav-item">
                   <button className="btn btn-primary mx-2">
@@ -112,13 +114,13 @@ export const Navbar = () => {
             ) : (
               <li className="nav-item">
                 <Link to={'/login'}>
-                <button className="btn btn-success">
-                  Login
-                </button>
+                  <button className="btn btn-success">
+                    Login
+                  </button>
                 </Link>
               </li>
             )}
-            {!store.user ? (
+            {!user && !store.user ? (
               <li className="nav-item">
                 <Link to="/signup" className="nav-link">
                   Register
