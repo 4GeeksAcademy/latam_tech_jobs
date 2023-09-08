@@ -94,7 +94,6 @@ export function Post() {
     }
   };
 
-
   const handleJobDescriptionChange = (e) => {
     const inputValue = e.target.value;
     if (inputValue.length <= maxLength) {
@@ -207,12 +206,11 @@ export function Post() {
             <option value="full_time">Full-time (40 hrs/wk)</option>
             <option value="part_time">Part-time (20 hrs/wk)</option>
             <option value="contract">Contract</option>
-            <option value="project">Project</option>
           </select>
         </div>
         <div className="col-md-6">
           <label htmlFor="payRate" className="form-label">
-            Pay rate ($/per month) *
+            Pay rate ($/per hour) *
           </label>
           <input
             type="number"

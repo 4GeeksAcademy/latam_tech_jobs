@@ -108,7 +108,7 @@ export function Login() {
                     <a href="#">Forgot password?</a>
                 </div>
                 <div className="d-flex justify-content-center mb-3">
-                    <button onClick = {(e)=>{loginClick(e)}} type="submit" className="btn btn-primary">
+                    <button onClick = {(e)=>{loginClick(e)}} type="submit" className="btn btn-success">
                     {isLoading ? (<span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>) : ('Login')}
                     </button>
                 </div>

@@ -5,3 +5,30 @@
     one more css for each page that will contain the selected used 
     on that page only (the ones not reused in other pages).
 */
+.card-get-started {
+  text-align: center;
+  background-color: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  margin-top: 15px;
+  padding: 5px; 
+  max-width: 100%; 
+  margin-left: 8px; 
+  margin-right: 5px; 
+}
+
+.card-get-started img {
+  max-width: 100%;
+  height: auto;
+}
+
+.form-range::-webkit-slider-thumb {
+    background-color: #198754; 
+  }
+  
+  .form-range::-moz-range-thumb {
+    background-color: #198754;
+  }
+  
+  .form-range::-ms-thumb {
+    background-color: #198754;
+  }

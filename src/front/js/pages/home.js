@@ -36,7 +36,7 @@ export const Home = () => {
   const clearCountry = () => {
     var dropDown = document.getElementById("countryDrop");
     dropDown.selectedIndex = 0;
-    setCountry(null)
+    setCountry(null);
   };
 
   useEffect(() => {
@@ -131,9 +131,9 @@ export const Home = () => {
     document.getElementById("titleInput").value = null;
     setMaxSal(0);
     setMinSal(0);
-    setCountry(null)
-    setTitle(null)
-    setType(null)
+    setCountry(null);
+    setTitle(null);
+    setType(null);
     clearJobType();
     clearCountry();
     setIsLoading(false);
@@ -168,7 +168,7 @@ export const Home = () => {
           <button
             onClick={filterClick}
             type="button"
-            class="btn btn-primary"
+            class="btn btn-success"
             style={{ color: "white" }}
           >
             Search
@@ -179,8 +179,8 @@ export const Home = () => {
       <div className="row">
         <div className="col-3 border-end">
           {/* Filtro izquierdo empieza aqui */}
-          <div className="row justify-content-center mb-5 mt-5">
-            <div className="col-7 d-flex">
+          <div className="row justify-content-center mb-5 mt-3">
+            <div className="col-12 col-md-7 d-flex">
               <select
                 onChange={(e) => {
                   setCountry(e.target.value);
@@ -189,9 +189,7 @@ export const Home = () => {
                 aria-label="Default select example"
                 id="countryDrop"
               >
-                <option selected>
-                  Select a country
-                </option>
+                <option selected>Select a country</option>
                 <option value="Nicaragua">Nicaragua</option>
                 <option value="Guatemala">Guatemala</option>
                 <option value="Colombia">Colombia</option>
@@ -199,8 +197,8 @@ export const Home = () => {
               </select>
             </div>
             <div className="row justify-content-center mb-4">
-              <div className="col-7 d-flex flex-wrap justify-content-around">
-                <div className="form-check">
+              <div className="col-12 col-md-7 d-flex flex-wrap justify-content-between">
+                <div className="form-check my-1">
                   <input
                     value="full_time"
                     className="form-check-input"
@@ -212,7 +210,7 @@ export const Home = () => {
                     Fulltime
                   </label>
                 </div>
-                <div className="form-check">
+                <div className="form-check my-1">
                   <input
                     value="part_time"
                     className="form-check-input"
@@ -224,7 +222,7 @@ export const Home = () => {
                     Partime
                   </label>
                 </div>
-                <div className="form-check">
+                <div className="form-check my-1">
                   <input
                     value="contract"
                     className="form-check-input"
@@ -238,8 +236,8 @@ export const Home = () => {
                 </div>
               </div>
             </div>
-            <div className="row justify-content-center mb-5 mt-5 ">
-              <div className="col-7 d-flex flex-wrap justify-content-around">
+            <div className="row justify-content-center mb-1 mt-4 ">
+              <div className="col-12 col-md-7 d-flex flex-wrap justify-content-between">
                 <label htmlFor="customRange3" className="form-label">
                   Min salary US${minSal}/hr
                 </label>
@@ -257,8 +255,8 @@ export const Home = () => {
                 />
               </div>
             </div>
-            <div className="row justify-content-center mb-5 mt-5">
-              <div className="col-7 d-flex flex-wrap justify-content-around">
+            <div className="row justify-content-center mb-2 mt-5">
+              <div className="col-12 col-md-7 d-flex flex-wrap justify-content-between">
                 <label htmlFor="customRange3" className="form-label">
                   Max salary US${maxSal}/hr
                 </label>
@@ -304,7 +302,7 @@ export const Home = () => {
         <div className="col-6">
           {store.jobs ? (
             store.jobs.map((job, id) => (
-              <div key={id} className="card text-center mb-3">
+              <div key={id} className="card text-center mb-3 mt-1">
                 <div className="card-header">{job.company_name}</div>
                 <div className="card-body">
                   <h5 className="card-title mb-4">{job.job_title}</h5>
@@ -368,20 +366,14 @@ export const Home = () => {
             <></>
           )}
         </div>
-        <div
-          className="card col-3 justify-content-center align-items-center mt-5 ms-5"
-          style={{ height: "285px", width: "325px" }}
-        >
-          <img
-            src={createCV}
-            alt="resumePage"
-            style={{ maxWidth: "100%", height: "auto" }}
-          />
-          <Link className="article" to="/createcv">
-            <button className="btn bg-success" style={{ color: "white" }}>
-              Get Started
-            </button>
-          </Link>
+
+        <div className="col-12 col-md-3 mb-4">
+          <div className="card-get-started">
+            <img src={createCV} className="card-img-top" alt="..." />
+            <Link className="article" to="/createcv">
+              <button className="btn btn-success">Get started</button>
+            </Link>
+          </div>
         </div>
       </div>
     </div>
