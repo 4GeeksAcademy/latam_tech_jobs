@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
+import { Link } from "react-router-dom";
 
 export function Job() {
   const { store, actions } = useContext(Context);
@@ -38,10 +39,10 @@ export function Job() {
         Job Application Details
       </h1>
 
-      <div className="border border-3 border-success rounded-3 p-4 mb-4">
-        <h6>
+      <div className="border border-3 border-success rounded-3 bg-light p-4 mb-4">
+        <h5>
           <i className="fas fa-file-alt"></i> Job Details
-        </h6>
+        </h5>
         <p>
           <strong>Job Title:</strong> {store.single_job.job_title}
         </p>
@@ -55,10 +56,10 @@ export function Job() {
 
       <div className="row">
         <div className="col-md-6">
-          <div className="border border-3 border-success rounded-3 p-4 h-95 mb-4">
-            <h6>
+          <div className="border border-3 border-success rounded-3 bg-light p-4 h-95 mb-4">
+            <h5>
               <i className="fas fa-money-bill"></i> Job Requirements and Pay
-            </h6>
+            </h5>
             <p>
               <strong>Job Type:</strong> {store.single_job.job_type}
             </p>
@@ -76,10 +77,10 @@ export function Job() {
         </div>
 
         <div className="col-md-6">
-          <div className="border border-3 border-success rounded-3 p-4 h-90 mb-4">
-            <h6>
+          <div className="border border-3 border-success rounded-3 bg-light p-4 h-90 mb-4">
+            <h5>
               <i className="fas fa-building"></i> Company Details
-            </h6>
+            </h5>
             <p>
               <strong>Company Name:</strong> {store.single_job.company_name}
             </p>
@@ -96,10 +97,10 @@ export function Job() {
         </div>
       </div>
 
-      <div className="border border-2 border-success rounded-3 p-4 mb-4">
-        <h6>
+      <div className="border border-2 border-success rounded-3 bg-light p-4 mb-4">
+        <h5>
           <i className="fas fa-user"></i> Candidate Questions
-        </h6>
+        </h5>
         {questionsArray.map((question, index) => (
           <p key={index}>
             <strong>Question {index + 1}:</strong> {question}
@@ -108,9 +109,12 @@ export function Job() {
       </div>
 
       <div className="apply-button-container">
-        <a href="#" className="btn btn-primary apply-button">
+        <Link
+          to={"/apply/" + params.id}
+          className="btn btn-success apply-button"
+        >
           Apply to this job
-        </a>
+        </Link>
       </div>
     </div>
   );

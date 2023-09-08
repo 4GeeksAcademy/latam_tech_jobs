@@ -139,7 +139,7 @@ export function SignUp(){
                 <textarea onChange={(e)=>{setCompany_description(e.target.value)}} className="form-control" aria-label="With textarea" rows="5" required></textarea>
         </div>
         <div className="d-flex justify-content-center mt-4">
-            <button onClick={handleSubmit} type="submit" class="btn btn-primary">
+            <button onClick={handleSubmit} type="submit" class="btn btn-success">
             {isLoading ? (<span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>) : ('Submit')}
             </button>
         </div>

@@ -112,7 +112,7 @@ export const Navbar = () => {
             ) : (
               <li className="nav-item">
                 <Link to={'/login'}>
-                <button className="btn btn-primary">
+                <button className="btn btn-success">
                   Login
                 </button>
                 </Link>
