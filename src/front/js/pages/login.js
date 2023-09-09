@@ -5,16 +5,23 @@ import { GoogleButton } from 'react-google-button'
 import { useAuth } from "../store/authContext";
 import 'bootstrap/dist/css/bootstrap.min.css'; 
 import { Button, Modal } from 'react-bootstrap'; 
-
+import GoogleSignInButton from '../component/GoogleSignInButton.jsx'
 
 export function Login() {
-    const { googleSignIn, user } = useAuth();
+    /*const { googleSignIn, user } = useAuth();*/
     const { store, actions } = useContext(Context);
     const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
     const [login, setLogin] = useState(false)
     const [isLoading, setIsLoading] = useState(false);
-
+    const token = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjE5MGFkMTE4YTk0MGFkYzlmMmY1Mzc2YjM1MjkyZmVkZThjMmQwZWUiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiQnlyb24gUm9kcmlndWV6IEFyYWdvbiIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQWNIVHRlTzl1emRXNFRrNmlFaElJR01HN1pheTBzVnpLOGUydU9QMkZXc0stNFYtQT1zOTYtYyIsImlzcyI6Imh0dHBzOi8vc2VjdXJldG9rZW4uZ29vZ2xlLmNvbS9sYXRhbS10ZWNoLWpvYnMiLCJhdWQiOiJsYXRhbS10ZWNoLWpvYnMiLCJhdXRoX3RpbWUiOjE2OTQxMjMxMzYsInVzZXJfaWQiOiJubTBYcDVTRkplUkNCSGRUNmZaOFJzdUxUaXQyIiwic3ViIjoibm0wWHA1U0ZKZVJDQkhkVDZmWjhSc3VMVGl0MiIsImlhdCI6MTY5NDIxMDE5NCwiZXhwIjoxNjk0MjEzNzk0LCJlbWFpbCI6ImJ5cm9uMzAzQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7Imdvb2dsZS5jb20iOlsiMTAzMDg4NTM2MzMwMjAxNDI3MjQzIl0sImVtYWlsIjpbImJ5cm9uMzAzQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6Imdvb2dsZS5jb20ifX0.cdtQJ7ki1-hI8g977mZkD7Zpc89AhKrNrKhymAzXHa14_7kJTxjN3X6zS_3JfXzvwfcJkjgoWcM_UArD_QHAWpvwPzlfrLjK0CT16oF1OtntubOFeLU4Fdwi39Q_poK7fY6wYV1f3NhkNwoo2wcWFCU0-zFnOR35_caSdEKqE8fj_O4wi2ZOGGmjSIH6TipJ9-PEZ-r5hOpL0SoIbqHxzfNY0W-yphcLybJYx3vav_fBdWOUu2cEO35a7tCX0nw3ek9Ht-pZuwyL04GX3i9fDv0-0VTQBfjNk3LhqOkGNJ1TF1gTaBsrTziTGfr9OB3n6l7j-BFdeC8xjiHA1ogRXA"
+    
+    const google_button_click = async() => {
+        const resp = actions.google_sigin(token)
+        if (resp){
+            navigate("/")
+        }
+    }
     const handleOpenModal = () => {
       setShowModal(true);
       setIsLoading(false)
@@ -29,6 +36,38 @@ export function Login() {
       }
       
     };
+
+    const handleLoginSuccess = async (response) => {
+        // Retrieve the Google Sign-In token
+        const googleToken = response.tokenId;
+ 
+        // Send the token to the backend and handle the response
+        try {
+            const response = await fetch('https://turbo-winner-qpgrrjjrrrx24pwj-3001.app.github.dev/api/auth/google/token', {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ token_info: googleToken }),
+            });
+ 
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+ 
+            const data = await response.json();
+            localStorage.setItem("jwt-token", data.authorization)
+        } catch (error) {
+            console.error('Error sending token to backend:', error);
+        }
+    };
+
+    const handleLoginFailure = (error) => {
+        // Handle login failure here
+        console.error('Login failed:', error);
+    };
+    /*
 
     const handleGoogleSignIn = async () => {
         try {
@@ -55,7 +94,7 @@ export function Login() {
         }
     };
 
-    
+   */ 
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     
@@ -118,7 +157,15 @@ export function Login() {
                 </form>
                 <div className="d-flex justify-content-center mb-3">
                     <div className="col-4 d-flex justify-content-between">
-                        <GoogleButton onClick={handleGoogleSignIn}/>
+                        <GoogleSignInButton 
+                            onLoginSuccess={handleLoginSuccess}
+                            onLoginFailure={handleLoginFailure}
+                        />
+                        {/*
+                        <button onClick = {google_button_click} type="submit" className="btn btn-primary">
+                            test button
+                        </button>                        
+                        */}                        
                     </div>
                 </div>
             </div>

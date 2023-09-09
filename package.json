@@ -83,6 +83,7 @@
 		"react-bootstrap": "^2.8.0",
 		"react-dom": "^16.8.4",
 		"react-google-button": "^0.7.2",
+		"react-google-login": "^5.2.2",
 		"react-jwt": "^1.2.0",
 		"react-polyfills": "0.0.1",
 		"react-router-dom": "^6.3.0"

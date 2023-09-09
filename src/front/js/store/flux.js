@@ -107,26 +107,26 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			},
 			google_sigin: async(token) => {
-				const store = getStore()
 				try {
-					const response = await fetch("/api/google_login", {
-						method: "POST",
+					const response = await fetch(process.env.BACKEND_URL + '/api/auth/google/token', {
+						method: 'POST',
 						headers: {
-							"Content-Type": "application/json",
+							'Content-Type': 'application/json',
 						},
-						body: JSON.stringify({ token: token }),
+						body: JSON.stringify({ token_info: token }),
 					});
-					if(response.ok){
-						const data = await response.json()
-						localStorage.setItem("jwt-token", data.authorization);
-						setStore({
-							user: data.user
-						})
-						console.log(store.user)
-						return data
+		 
+					if (!response.ok) {
+						throw new Error('Network response was not ok');
 					}
+		 
+					const data = await response.json();
+					localStorage.setItem("jwt-token", data.authorization);
+					setStore({
+						user: data.user
+					})
 				} catch (error) {
-					console.log(error)
+					console.error('Error sending token to backend:', error);
 				}
 			},
 
