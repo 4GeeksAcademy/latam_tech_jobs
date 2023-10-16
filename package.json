@@ -1,4 +1,5 @@
 {
+	"homepage": "http://4GeeksAcademy.github.io/atam_tech_jobs/",
 	"name": "react-hello-webapp",
 	"engines": {
 		"node": "16.x"
@@ -8,6 +9,8 @@
 	"main": "index.js",
 	"scripts": {
 		"start": "webpack-dev-server --config webpack.dev.js --port 3000",
+		"predeploy": "npm run build",
+		"deploy": "gh-pages -d dist",
 		"build": "webpack --config webpack.prod.js"
 	},
 	"author": {
